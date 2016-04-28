@@ -1,6 +1,6 @@
 | package |
 package := Package name: 'ag'.
-package paxVersion: 1;
+package paxVersion: 0;
 	basicComment: ''.
 
 
@@ -8,6 +8,7 @@ package classNames
 	add: #Ag;
 	add: #AptitudEstrategy;
 	add: #Cromosoma;
+	add: #CruzamientoRandom;
 	add: #CruzamientoStrategy;
 	add: #Gen;
 	add: #MutacionEstrategy;
@@ -19,8 +20,11 @@ package binaryGlobalNames: (Set new
 package globalAliases: (Set new
 	yourself).
 
+package allResourceNames: (Set new
+	yourself).
+
 package setPrerequisites: (IdentitySet new
-	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk X6\Object Arts\Dolphin\Base\Dolphin';
+	add: 'C:\Users\bmendez\Desktop\Imagen BV 7\Object Arts\Dolphin\Base\Dolphin';
 	yourself).
 
 package!
@@ -53,6 +57,11 @@ Model subclass: #Gen
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
 Model subclass: #MutacionEstrategy
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+CruzamientoStrategy subclass: #CruzamientoRandom
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -116,8 +125,22 @@ posicion: anObject
 !Gen categoriesFor: #posicion!accessing!public! !
 !Gen categoriesFor: #posicion:!accessing!public! !
 
+!Gen class methodsFor!
+
+new: unNumero
+	|gen|
+	gen:= self new.
+	gen posicion: (Array new: unNumero).
+	^gen! !
+!Gen class categoriesFor: #new:!public! !
+
 MutacionEstrategy guid: (GUID fromString: '{0EDDE7A8-F69A-495C-8B62-ACB0B6E8A9E2}')!
 MutacionEstrategy comment: ''!
 !MutacionEstrategy categoriesForClass!Unclassified! !
+CruzamientoRandom guid: (GUID fromString: '{335521A3-1182-45AC-867E-2A0694C1E1EA}')!
+CruzamientoRandom comment: ''!
+!CruzamientoRandom categoriesForClass!Unclassified! !
 "Binary Globals"!
+
+"Resources"!
 
