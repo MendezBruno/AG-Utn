@@ -1,6 +1,6 @@
 | package |
 package := Package name: 'ag'.
-package paxVersion: 0;
+package paxVersion: 1;
 	basicComment: ''.
 
 
@@ -20,11 +20,8 @@ package binaryGlobalNames: (Set new
 package globalAliases: (Set new
 	yourself).
 
-package allResourceNames: (Set new
-	yourself).
-
 package setPrerequisites: (IdentitySet new
-	add: 'C:\Users\bmendez\Desktop\Imagen BV 7\Object Arts\Dolphin\Base\Dolphin';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk X6\Object Arts\Dolphin\Base\Dolphin';
 	yourself).
 
 package!
@@ -141,6 +138,4 @@ CruzamientoRandom guid: (GUID fromString: '{335521A3-1182-45AC-867E-2A0694C1E1EA
 CruzamientoRandom comment: ''!
 !CruzamientoRandom categoriesForClass!Unclassified! !
 "Binary Globals"!
-
-"Resources"!
 

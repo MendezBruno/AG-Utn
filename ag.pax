@@ -1,0 +1,73 @@
+| package |
+package := Package name: 'ag'.
+package paxVersion: 1;
+	basicComment: ''.
+
+
+package classNames
+	add: #Ag;
+	add: #AptitudEstrategy;
+	add: #Cromosoma;
+	add: #CruzamientoRandom;
+	add: #CruzamientoStrategy;
+	add: #Gen;
+	add: #MutacionEstrategy;
+	yourself.
+
+package binaryGlobalNames: (Set new
+	yourself).
+
+package globalAliases: (Set new
+	yourself).
+
+package setPrerequisites: (IdentitySet new
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk X6\Object Arts\Dolphin\Base\Dolphin';
+	yourself).
+
+package!
+
+"Class Definitions"!
+
+Model subclass: #Ag
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+Model subclass: #AptitudEstrategy
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+Model subclass: #Cromosoma
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+Model subclass: #CruzamientoStrategy
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+Model subclass: #Gen
+	instanceVariableNames: 'nombre posicion'
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+Model subclass: #MutacionEstrategy
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+CruzamientoStrategy subclass: #CruzamientoRandom
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+
+"Global Aliases"!
+
+
+"Loose Methods"!
+
+"End of package definition"!
+
