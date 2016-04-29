@@ -1,4 +1,4 @@
-"Filed out from Dolphin Smalltalk 7"!
+"Filed out from Dolphin Smalltalk X6"!
 
 Model subclass: #Cromosoma
 	instanceVariableNames: 'genes'
@@ -24,12 +24,8 @@ initialize
 
 !Cromosoma class methodsFor!
 
-initialize
-	self genes: OrderedCollection new.!
-
 new
 	^super new initialize
 ! !
-!Cromosoma class categoriesFor: #initialize!public! !
 !Cromosoma class categoriesFor: #new!public! !
 

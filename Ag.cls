@@ -1,6 +1,6 @@
-"Filed out from Dolphin Smalltalk 7"!
+"Filed out from Dolphin Smalltalk X6"!
 
-Poblacion subclass: #Ag
+Model subclass: #Ag
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''

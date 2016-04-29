@@ -22,13 +22,18 @@ package globalAliases: (Set new
 	yourself).
 
 package setPrerequisites: (IdentitySet new
-	add: '..\..\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk X6\Object Arts\Dolphin\Base\Dolphin';
 	yourself).
 
 package!
 
 "Class Definitions"!
 
+Model subclass: #Ag
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
 Model subclass: #AptitudEstrategy
 	instanceVariableNames: ''
 	classVariableNames: ''
@@ -64,11 +69,6 @@ CruzamientoStrategy subclass: #CruzamientoRandom
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
-Poblacion subclass: #Ag
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	classInstanceVariableNames: ''!
 
 "Global Aliases"!
 
@@ -81,6 +81,9 @@ Poblacion subclass: #Ag
 
 "Classes"!
 
+Ag guid: (GUID fromString: '{0418FE3E-735A-4CA4-8089-1D862A0B4BD0}')!
+Ag comment: ''!
+!Ag categoriesForClass!Unclassified! !
 AptitudEstrategy guid: (GUID fromString: '{97B8C90B-9B34-4447-AC5E-4449677598AA}')!
 AptitudEstrategy comment: ''!
 !AptitudEstrategy categoriesForClass!Unclassified! !
@@ -103,13 +106,9 @@ initialize
 
 !Cromosoma class methodsFor!
 
-initialize
-	self genes: OrderedCollection new.!
-
 new
 	^super new initialize
 ! !
-!Cromosoma class categoriesFor: #initialize!public! !
 !Cromosoma class categoriesFor: #new!public! !
 
 CruzamientoStrategy guid: (GUID fromString: '{83E98813-6E16-4E1A-84FC-AC76A766A268}')!
@@ -146,10 +145,10 @@ posicion: anObject
 
 !Gen class methodsFor!
 
-new: unNumero
+new: unArray
 	|gen|
 	gen:= self new.
-	gen posicion: (Array new: unNumero).
+	gen posicion: unArray.
 	^gen! !
 !Gen class categoriesFor: #new:!public! !
 
@@ -182,8 +181,5 @@ new
 CruzamientoRandom guid: (GUID fromString: '{335521A3-1182-45AC-867E-2A0694C1E1EA}')!
 CruzamientoRandom comment: ''!
 !CruzamientoRandom categoriesForClass!Unclassified! !
-Ag guid: (GUID fromString: '{0418FE3E-735A-4CA4-8089-1D862A0B4BD0}')!
-Ag comment: ''!
-!Ag categoriesForClass!Unclassified! !
 "Binary Globals"!
 

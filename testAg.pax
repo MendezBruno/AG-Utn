@@ -6,6 +6,7 @@ package paxVersion: 1;
 
 package classNames
 	add: #GenTests;
+	add: #PoblacionTest;
 	yourself.
 
 package binaryGlobalNames: (Set new
@@ -25,6 +26,11 @@ package!
 
 TestCase subclass: #GenTests
 	instanceVariableNames: 'gen'
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+TestCase subclass: #PoblacionTest
+	instanceVariableNames: 'poblacion'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!

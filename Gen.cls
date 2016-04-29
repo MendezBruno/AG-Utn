@@ -1,4 +1,4 @@
-"Filed out from Dolphin Smalltalk 7"!
+"Filed out from Dolphin Smalltalk X6"!
 
 Model subclass: #Gen
 	instanceVariableNames: 'nombre posicion'
@@ -36,10 +36,10 @@ posicion: anObject
 
 !Gen class methodsFor!
 
-new: unNumero
+new: unArray
 	|gen|
 	gen:= self new.
-	gen posicion: (Array new: unNumero).
+	gen posicion: unArray.
 	^gen! !
 !Gen class categoriesFor: #new:!public! !
 
