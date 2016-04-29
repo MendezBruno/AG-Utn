@@ -1,4 +1,4 @@
-"Filed out from Dolphin Smalltalk X6"!
+"Filed out from Dolphin Smalltalk 7"!
 
 Model subclass: #Gen
 	instanceVariableNames: 'nombre posicion'
@@ -9,11 +9,6 @@ Gen guid: (GUID fromString: '{81058575-B619-4315-AF48-DDD1A55C3CA6}')!
 Gen comment: 'Esta Clase se usa para definir cada gen que compondran los cromosomas.'!
 !Gen categoriesForClass!Unclassified! !
 !Gen methodsFor!
-
-crearPosicionesGen: unNumero 
-	"Crea el array del gen con las posiciones de un numero"
-
-	posicion := Array new: unNumero!
 
 nombre
 	"Answer the value of the receiver's 'nombre' instance variable."
@@ -34,7 +29,6 @@ posicion: anObject
 	"Set the value of the receiver's 'posicion' instance variable to the argument."
 
 	posicion := anObject! !
-!Gen categoriesFor: #crearPosicionesGen:!accessing!public! !
 !Gen categoriesFor: #nombre!accessing!public! !
 !Gen categoriesFor: #nombre:!accessing!public! !
 !Gen categoriesFor: #posicion!accessing!public! !

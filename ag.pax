@@ -12,6 +12,7 @@ package classNames
 	add: #CruzamientoStrategy;
 	add: #Gen;
 	add: #MutacionEstrategy;
+	add: #Poblacion;
 	yourself.
 
 package binaryGlobalNames: (Set new
@@ -21,25 +22,20 @@ package globalAliases: (Set new
 	yourself).
 
 package setPrerequisites: (IdentitySet new
-	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk X6\Object Arts\Dolphin\Base\Dolphin';
+	add: '..\..\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
 	yourself).
 
 package!
 
 "Class Definitions"!
 
-Model subclass: #Ag
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	classInstanceVariableNames: ''!
 Model subclass: #AptitudEstrategy
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
 Model subclass: #Cromosoma
-	instanceVariableNames: ''
+	instanceVariableNames: 'genes'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -58,7 +54,17 @@ Model subclass: #MutacionEstrategy
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
+Model subclass: #Poblacion
+	instanceVariableNames: 'cromosomas'
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
 CruzamientoStrategy subclass: #CruzamientoRandom
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+Poblacion subclass: #Ag
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
