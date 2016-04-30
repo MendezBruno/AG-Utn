@@ -6,7 +6,11 @@ package paxVersion: 1;
 
 package classNames
 	add: #Ag;
+	add: #Aptitud;
+	add: #AptitudBooleanTrue;
 	add: #AptitudEstrategy;
+	add: #AptitudSuperposicion;
+	add: #AptitudValoracion;
 	add: #Cromosoma;
 	add: #CruzamientoRandom;
 	add: #CruzamientoStrategy;
@@ -24,7 +28,11 @@ package globalAliases: (Set new
 	yourself).
 
 package setPrerequisites: (IdentitySet new
+<<<<<<< Updated upstream
 	add: '..\..\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
+=======
+	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
+>>>>>>> Stashed changes
 	yourself).
 
 package!
@@ -32,11 +40,35 @@ package!
 "Class Definitions"!
 
 Model subclass: #Ag
+<<<<<<< Updated upstream
 	instanceVariableNames: 'poblacion_seleccionada'
+=======
+	instanceVariableNames: 'poblacionInicial poblacionFinal mutacion cruzamiento seleccion aptitud'
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+Model subclass: #Aptitud
+	instanceVariableNames: 'dicDeFunciones'
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+Model subclass: #AptitudBooleanTrue
+	instanceVariableNames: ''
+>>>>>>> Stashed changes
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
 Model subclass: #AptitudEstrategy
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+Model subclass: #AptitudSuperposicion
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+Model subclass: #AptitudValoracion
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''

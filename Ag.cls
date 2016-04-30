@@ -1,7 +1,10 @@
 "Filed out from Dolphin Smalltalk 7"!
 
 Model subclass: #Ag
-	instanceVariableNames: 'poblacion_seleccionada'
+	
+
+	instanceVariableNames: 'poblacionInicial poblacion_seleccionada mutacion cruzamiento seleccion aptitud'
+
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!

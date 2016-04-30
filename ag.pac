@@ -6,7 +6,11 @@ package paxVersion: 1;
 
 package classNames
 	add: #Ag;
+	add: #Aptitud;
+	add: #AptitudBooleanTrue;
 	add: #AptitudEstrategy;
+	add: #AptitudSuperposicion;
+	add: #AptitudValoracion;
 	add: #Cromosoma;
 	add: #CruzamientoRandom;
 	add: #CruzamientoStrategy;
@@ -24,7 +28,11 @@ package globalAliases: (Set new
 	yourself).
 
 package setPrerequisites: (IdentitySet new
+<<<<<<< Updated upstream
 	add: '..\..\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
+=======
+	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
+>>>>>>> Stashed changes
 	yourself).
 
 package!
@@ -32,11 +40,35 @@ package!
 "Class Definitions"!
 
 Model subclass: #Ag
+<<<<<<< Updated upstream
 	instanceVariableNames: 'poblacion_seleccionada'
+=======
+	instanceVariableNames: 'poblacionInicial poblacionFinal mutacion cruzamiento seleccion aptitud'
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+Model subclass: #Aptitud
+	instanceVariableNames: 'dicDeFunciones'
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+Model subclass: #AptitudBooleanTrue
+	instanceVariableNames: ''
+>>>>>>> Stashed changes
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
 Model subclass: #AptitudEstrategy
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+Model subclass: #AptitudSuperposicion
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+Model subclass: #AptitudValoracion
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -96,6 +128,7 @@ SeleccionStrategy subclass: #Torneo
 Ag guid: (GUID fromString: '{0418FE3E-735A-4CA4-8089-1D862A0B4BD0}')!
 Ag comment: ''!
 !Ag categoriesForClass!Unclassified! !
+<<<<<<< Updated upstream
 !Ag methodsFor!
 
 convertir_a_decimal: unArray
@@ -116,20 +149,121 @@ poblacion_seleccionada: anObject
 !Ag categoriesFor: #convertir_a_decimal:!public! !
 !Ag categoriesFor: #poblacion_seleccionada!accessing!private! !
 !Ag categoriesFor: #poblacion_seleccionada:!accessing!private! !
+=======
+Aptitud guid: (GUID fromString: '{8AC60A11-E710-4988-8D36-E944B7CB5A46}')!
+Aptitud comment: 'Calcula la funcion de aptitud de los cromsomas tieendo en cuenta los datos de su diccionario'!
+!Aptitud categoriesForClass!MVP-Models! !
+!Aptitud methodsFor!
+
+aptitud: unCromosoma
+	(self dicDeFunciones at:1) aptitudDe: (unCromosoma dameTusGenesDesde: 1 a:1).
+	(self dicDeFunciones at:2) aptitudDe: (unCromosoma dameTusGenesDesde: 1 a:1).
+	(self dicDeFunciones at:4) aptitudDe: (unCromosoma dameTusGenesDesde: 1 a:1).
+	
+	
+!
+
+definirFunciones
+
+	self dicDeFunciones: Dictionary new.
+	dicDeFunciones at: 1 put: (AptitudBooleanTrue new).
+	dicDeFunciones at: 2 put: (AptitudValoracion new).
+	dicDeFunciones at: 4 put: (AptitudSuperposicion new).!
+
+dicDeFunciones
+	^dicDeFunciones!
+
+dicDeFunciones: anObject
+	dicDeFunciones := anObject!
+
+initialize
+	self definirFunciones! !
+!Aptitud categoriesFor: #aptitud:!public! !
+!Aptitud categoriesFor: #definirFunciones!public! !
+!Aptitud categoriesFor: #dicDeFunciones!accessing!private! !
+!Aptitud categoriesFor: #dicDeFunciones:!accessing!private! !
+!Aptitud categoriesFor: #initialize!public! !
+
+!Aptitud class methodsFor!
+
+new
+	^super new initialize! !
+!Aptitud class categoriesFor: #new!public! !
+
+AptitudBooleanTrue guid: (GUID fromString: '{E1972F12-E1FB-413D-BA12-B84394E7A069}')!
+AptitudBooleanTrue comment: ''!
+!AptitudBooleanTrue categoriesForClass!MVP-Models! !
+!AptitudBooleanTrue class methodsFor!
+
+aptitudDe: listaGenes
+	| acum |
+	acum:=0.
+	listaGenes do: [:gen | (gen includes: 1) ifTrue: [acum := acum - 50] ifFalse: [acum := acum + 100]].
+	^acum! !
+!AptitudBooleanTrue class categoriesFor: #aptitudDe:!public! !
+>>>>>>> Stashed changes
 
 AptitudEstrategy guid: (GUID fromString: '{97B8C90B-9B34-4447-AC5E-4449677598AA}')!
 AptitudEstrategy comment: ''!
 !AptitudEstrategy categoriesForClass!Unclassified! !
+AptitudSuperposicion guid: (GUID fromString: '{80BA86AB-DFA6-4F06-BC41-EAEF711C1C81}')!
+AptitudSuperposicion comment: ''!
+!AptitudSuperposicion categoriesForClass!MVP-Models! !
+!AptitudSuperposicion class methodsFor!
+
+aptitudDe: listaGenes
+^(self genesIguales:listaGenes)*-125
+
+
+!
+
+genesIguales:listaGenes
+|listaNumeros |
+listaNumeros:= OrderedCollection new.
+listaGenes do:[:gen| listaNumeros add: ("genDeByteaInt:"gen)].
+^(listaNumeros size)- (listaNumeros asSet size)
+! !
+!AptitudSuperposicion class categoriesFor: #aptitudDe:!public! !
+!AptitudSuperposicion class categoriesFor: #genesIguales:!public! !
+
+AptitudValoracion guid: (GUID fromString: '{739A3F71-BF23-494C-9922-7A57F172BD1A}')!
+AptitudValoracion comment: ''!
+!AptitudValoracion categoriesForClass!MVP-Models! !
+!AptitudValoracion class methodsFor!
+
+aptitudDe: listaGenes
+	| acum |
+	acum := 0.
+	listaGenes do: [:gen | acum := acum + (self valorDe: gen)].
+	^acum * 50!
+
+valorDe: gen
+|acum|
+acum:=0.
+
+	^acum
+		! !
+!AptitudValoracion class categoriesFor: #aptitudDe:!public! !
+!AptitudValoracion class categoriesFor: #valorDe:!public! !
+
 Cromosoma guid: (GUID fromString: '{A176475E-F6E0-43D0-BF7F-1D2D90E925A1}')!
 Cromosoma comment: ''!
 !Cromosoma categoriesForClass!Unclassified! !
 !Cromosoma methodsFor!
 
+<<<<<<< Updated upstream
 aptitud
 	^aptitud!
 
 aptitud: anObject
 	aptitud := anObject!
+=======
+dameTusGenesDesde: start a: stop
+	| listaGenes |
+	listaGenes := OrderedCollection new.
+	genes do: [:gen | listaGenes add: (gen copyFrom: start to: stop)].
+	^listaGenes!
+>>>>>>> Stashed changes
 
 genes
 	^genes!
@@ -139,8 +273,12 @@ genes: anObject
 
 initialize
 	self genes: OrderedCollection new.! !
+<<<<<<< Updated upstream
 !Cromosoma categoriesFor: #aptitud!accessing!private! !
 !Cromosoma categoriesFor: #aptitud:!accessing!private! !
+=======
+!Cromosoma categoriesFor: #dameTusGenesDesde:a:!public! !
+>>>>>>> Stashed changes
 !Cromosoma categoriesFor: #genes!accessing!private! !
 !Cromosoma categoriesFor: #genes:!accessing!private! !
 !Cromosoma categoriesFor: #initialize!public! !
