@@ -1,7 +1,7 @@
 "Filed out from Dolphin Smalltalk 7"!
 
 Model subclass: #Cromosoma
-	instanceVariableNames: 'genes'
+	instanceVariableNames: 'genes aptitud'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -10,11 +10,19 @@ Cromosoma comment: ''!
 !Cromosoma categoriesForClass!Unclassified! !
 !Cromosoma methodsFor!
 
+<<<<<<< Updated upstream
+aptitud
+	^aptitud!
+
+aptitud: anObject
+	aptitud := anObject!
+=======
 dameTusGenesDesde: start a: stop
 	| listaGenes |
 	listaGenes := OrderedCollection new.
 	genes do: [:gen | listaGenes add: (gen copyFrom: start to: stop)].
 	^listaGenes!
+>>>>>>> Stashed changes
 
 genes
 	^genes!
@@ -24,7 +32,12 @@ genes: anObject
 
 initialize
 	self genes: OrderedCollection new.! !
+<<<<<<< Updated upstream
+!Cromosoma categoriesFor: #aptitud!accessing!private! !
+!Cromosoma categoriesFor: #aptitud:!accessing!private! !
+=======
 !Cromosoma categoriesFor: #dameTusGenesDesde:a:!public! !
+>>>>>>> Stashed changes
 !Cromosoma categoriesFor: #genes!accessing!private! !
 !Cromosoma categoriesFor: #genes:!accessing!private! !
 !Cromosoma categoriesFor: #initialize!public! !

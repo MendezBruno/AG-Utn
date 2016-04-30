@@ -16,4 +16,3 @@ aptitudDe: listaGenes
 	listaGenes do: [:gen | (gen includes: 1) ifTrue: [acum := acum - 50] ifFalse: [acum := acum + 100]].
 	^acum! !
 !AptitudBooleanTrue class categoriesFor: #aptitudDe:!public! !
-
