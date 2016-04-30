@@ -13,6 +13,8 @@ package classNames
 	add: #Gen;
 	add: #MutacionEstrategy;
 	add: #Poblacion;
+	add: #SeleccionStrategy;
+	add: #Torneo;
 	yourself.
 
 package binaryGlobalNames: (Set new
@@ -22,7 +24,7 @@ package globalAliases: (Set new
 	yourself).
 
 package setPrerequisites: (IdentitySet new
-	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk X6\Object Arts\Dolphin\Base\Dolphin';
+	add: '..\..\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
 	yourself).
 
 package!
@@ -30,7 +32,7 @@ package!
 "Class Definitions"!
 
 Model subclass: #Ag
-	instanceVariableNames: ''
+	instanceVariableNames: 'poblacion_seleccionada'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -40,7 +42,7 @@ Model subclass: #AptitudEstrategy
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
 Model subclass: #Cromosoma
-	instanceVariableNames: 'genes'
+	instanceVariableNames: 'genes aptitud'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -64,8 +66,18 @@ Model subclass: #Poblacion
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
+Model subclass: #SeleccionStrategy
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
 CruzamientoStrategy subclass: #CruzamientoRandom
 	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+SeleccionStrategy subclass: #Torneo
+	instanceVariableNames: 'poblacion'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -84,6 +96,27 @@ CruzamientoStrategy subclass: #CruzamientoRandom
 Ag guid: (GUID fromString: '{0418FE3E-735A-4CA4-8089-1D862A0B4BD0}')!
 Ag comment: ''!
 !Ag categoriesForClass!Unclassified! !
+!Ag methodsFor!
+
+convertir_a_decimal: unArray
+	| iteracion acum |
+	iteracion := 0.
+	acum := 0.
+	unArray do: 
+			[:unValor |
+			unValor = 1 ifTrue: [acum := acum + (2 ** iteracion)].
+			iteracion := iteracion + 1].
+	^acum!
+
+poblacion_seleccionada
+	^poblacion_seleccionada!
+
+poblacion_seleccionada: anObject
+	poblacion_seleccionada := anObject! !
+!Ag categoriesFor: #convertir_a_decimal:!public! !
+!Ag categoriesFor: #poblacion_seleccionada!accessing!private! !
+!Ag categoriesFor: #poblacion_seleccionada:!accessing!private! !
+
 AptitudEstrategy guid: (GUID fromString: '{97B8C90B-9B34-4447-AC5E-4449677598AA}')!
 AptitudEstrategy comment: ''!
 !AptitudEstrategy categoriesForClass!Unclassified! !
@@ -91,6 +124,12 @@ Cromosoma guid: (GUID fromString: '{A176475E-F6E0-43D0-BF7F-1D2D90E925A1}')!
 Cromosoma comment: ''!
 !Cromosoma categoriesForClass!Unclassified! !
 !Cromosoma methodsFor!
+
+aptitud
+	^aptitud!
+
+aptitud: anObject
+	aptitud := anObject!
 
 genes
 	^genes!
@@ -100,6 +139,8 @@ genes: anObject
 
 initialize
 	self genes: OrderedCollection new.! !
+!Cromosoma categoriesFor: #aptitud!accessing!private! !
+!Cromosoma categoriesFor: #aptitud:!accessing!private! !
 !Cromosoma categoriesFor: #genes!accessing!private! !
 !Cromosoma categoriesFor: #genes:!accessing!private! !
 !Cromosoma categoriesFor: #initialize!public! !
@@ -178,8 +219,33 @@ new
 	^super new initialize! !
 !Poblacion class categoriesFor: #new!public! !
 
+SeleccionStrategy guid: (GUID fromString: '{4EA18C78-4D96-4BF2-8C05-9F90FF393783}')!
+SeleccionStrategy comment: ''!
+!SeleccionStrategy categoriesForClass!MVP-Models! !
 CruzamientoRandom guid: (GUID fromString: '{335521A3-1182-45AC-867E-2A0694C1E1EA}')!
 CruzamientoRandom comment: ''!
 !CruzamientoRandom categoriesForClass!Unclassified! !
+Torneo guid: (GUID fromString: '{8FD5E23B-9C62-47A3-BEDC-690FD816F7CF}')!
+Torneo comment: ''!
+!Torneo categoriesForClass!MVP-Models! !
+!Torneo methodsFor!
+
+poblacion
+	^poblacion!
+
+poblacion: anObject
+	poblacion := anObject!
+
+seleccionar
+
+	 poblacion cromosomas sortUsing: (DefaultSortAlgorithm sortBlock: [:a :b |a aptitud >b aptitud ]).
+
+	^poblacion
+
+! !
+!Torneo categoriesFor: #poblacion!accessing!private! !
+!Torneo categoriesFor: #poblacion:!accessing!private! !
+!Torneo categoriesFor: #seleccionar!public! !
+
 "Binary Globals"!
 
