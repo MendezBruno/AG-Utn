@@ -11,12 +11,10 @@ Aptitud comment: 'Calcula la funcion de aptitud de los cromsomas tieendo en cuen
 !Aptitud methodsFor!
 
 aptitud: unCromosoma
-	(self dicDeFunciones at:1) aptitudDe: (unCromosoma dameTusGenesDesde: 1 a:1).
-	(self dicDeFunciones at:2) aptitudDe: (unCromosoma dameTusGenesDesde: 1 a:1).
-	(self dicDeFunciones at:4) aptitudDe: (unCromosoma dameTusGenesDesde: 1 a:1).
-	
-	
-!
+
+	^(((self dicDeFunciones at: 1) aptitudDe: (unCromosoma dameTusGenesDesde: 1 a: 1))
+		+ ((self dicDeFunciones at: 2) aptitudDe: (unCromosoma dameTusGenesDesde: 2 a: 3))
+			+ ((self dicDeFunciones at: 4) aptitudDe: (unCromosoma dameTusGenesDesde: 4 a: 6)))!
 
 definirFunciones
 

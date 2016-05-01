@@ -1,14 +1,14 @@
 "Filed out from Dolphin Smalltalk 7"!
 
-TestCase subclass: #PoblacionTest
+TestCase subclass: #TestAptitud
 	instanceVariableNames: 'poblacion'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
-PoblacionTest guid: (GUID fromString: '{D1FEE66A-C0B9-4C71-84FC-C0D40E78CDD6}')!
-PoblacionTest comment: ''!
-!PoblacionTest categoriesForClass!Unclassified! !
-!PoblacionTest methodsFor!
+TestAptitud guid: (GUID fromString: '{8C0F7198-AFBB-4106-BFD2-9BC3922A91A9}')!
+TestAptitud comment: ''!
+!TestAptitud categoriesForClass!SUnit! !
+!TestAptitud methodsFor!
 
 setUp
 	| cromosoma1 cromosoma2 |
@@ -22,6 +22,13 @@ setUp
 	cromosoma2 genes add: (Gen new: #(0 0 1 0 1 1)).
 	cromosoma2 genes add: (Gen new: #(1 0 1 1 1 1)).
 	poblacion cromosomas add: cromosoma1.
-	poblacion cromosomas add: cromosoma2.! !
-!PoblacionTest categoriesFor: #setUp!public! !
+	poblacion cromosomas add: cromosoma2.!
+
+testAptitud
+	| aptitud |
+	aptitud := Aptitud new.
+	 self assert: ((aptitud aptitud: poblacion cromosomas first) = 450).
+	! !
+!TestAptitud categoriesFor: #setUp!public! !
+!TestAptitud categoriesFor: #testAptitud!public! !
 

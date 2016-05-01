@@ -29,8 +29,6 @@ package globalAliases: (Set new
 
 package setPrerequisites: (IdentitySet new
 	add: '..\..\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
-	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
-
 	yourself).
 
 package!
@@ -38,7 +36,7 @@ package!
 "Class Definitions"!
 
 Model subclass: #Ag
-	instanceVariableNames: 'poblacionInicial poblacionFinal mutacion cruzamiento seleccion aptitud'
+	instanceVariableNames: 'poblacionInicial poblacion_seleccionada mutacion cruzamiento seleccion aptitud'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -49,7 +47,6 @@ Model subclass: #Aptitud
 	classInstanceVariableNames: ''!
 Model subclass: #AptitudBooleanTrue
 	instanceVariableNames: ''
->>>>>>> Stashed changes
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -115,3 +112,4 @@ SeleccionStrategy subclass: #Torneo
 "Loose Methods"!
 
 "End of package definition"!
+
