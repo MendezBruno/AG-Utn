@@ -34,7 +34,7 @@ initialize
 !Cromosoma categoriesFor: #aptitud:!public! !
 !Cromosoma categoriesFor: #dameTusGenesDesde:a:!public! !
 !Cromosoma categoriesFor: #genes!public! !
-!Cromosoma categoriesFor: #genes:!accessing!private! !
+!Cromosoma categoriesFor: #genes:!accessing!public! !
 !Cromosoma categoriesFor: #initialize!public! !
 
 !Cromosoma class methodsFor!

@@ -28,7 +28,7 @@ package globalAliases: (Set new
 	yourself).
 
 package setPrerequisites: (IdentitySet new
-	add: '..\..\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
 	yourself).
 
 package!
@@ -171,20 +171,20 @@ seleccion
 
 seleccion: anObject
 	seleccion := anObject! !
-!Ag categoriesFor: #aptitud!accessing!private! !
-!Ag categoriesFor: #aptitud:!accessing!private! !
+!Ag categoriesFor: #aptitud!accessing!public! !
+!Ag categoriesFor: #aptitud:!accessing!public! !
 !Ag categoriesFor: #convertir_a_decimal:!public! !
-!Ag categoriesFor: #cruzamiento!accessing!private! !
-!Ag categoriesFor: #cruzamiento:!accessing!private! !
+!Ag categoriesFor: #cruzamiento!accessing!public! !
+!Ag categoriesFor: #cruzamiento:!accessing!public! !
 !Ag categoriesFor: #initialize!public! !
-!Ag categoriesFor: #mutacion!accessing!private! !
-!Ag categoriesFor: #mutacion:!accessing!private! !
-!Ag categoriesFor: #poblacion_seleccionada!accessing!private! !
-!Ag categoriesFor: #poblacion_seleccionada:!accessing!private! !
-!Ag categoriesFor: #poblacionInicial!accessing!private! !
-!Ag categoriesFor: #poblacionInicial:!accessing!private! !
-!Ag categoriesFor: #seleccion!accessing!private! !
-!Ag categoriesFor: #seleccion:!accessing!private! !
+!Ag categoriesFor: #mutacion!accessing!public! !
+!Ag categoriesFor: #mutacion:!accessing!public! !
+!Ag categoriesFor: #poblacion_seleccionada!accessing!public! !
+!Ag categoriesFor: #poblacion_seleccionada:!accessing!public! !
+!Ag categoriesFor: #poblacionInicial!accessing!public! !
+!Ag categoriesFor: #poblacionInicial:!accessing!public! !
+!Ag categoriesFor: #seleccion!accessing!public! !
+!Ag categoriesFor: #seleccion:!accessing!public! !
 
 !Ag class methodsFor!
 
@@ -383,7 +383,7 @@ initialize
 !Cromosoma categoriesFor: #aptitud:!public! !
 !Cromosoma categoriesFor: #dameTusGenesDesde:a:!public! !
 !Cromosoma categoriesFor: #genes!public! !
-!Cromosoma categoriesFor: #genes:!accessing!private! !
+!Cromosoma categoriesFor: #genes:!accessing!public! !
 !Cromosoma categoriesFor: #initialize!public! !
 
 !Cromosoma class methodsFor!
@@ -449,10 +449,21 @@ cromosomas: anObject
 	cromosomas := anObject!
 
 initialize
-	self cromosomas: OrderedCollection new.! !
-!Poblacion categoriesFor: #cromosomas!accessing!private! !
-!Poblacion categoriesFor: #cromosomas:!accessing!private! !
+	self cromosomas: OrderedCollection new.!
+
+mutate
+	| rGenerator rCromo rGen rPosicion |
+	rGenerator := Random new.
+	rCromo := (rGenerator next * (cromosomas size-1)) rounded+1.
+	rGen := (rGenerator next * 2) rounded+1.
+	rPosicion := (rGenerator next * 5) rounded+1.
+	(((self cromosomas at: rCromo) genes at: rGen) posicion at: rPosicion) = 1
+		ifTrue: [((self cromosomas at: rCromo) genes at: rGen) posicion at: rPosicion put: 0]
+		ifFalse: [((self cromosomas at: rCromo) genes at: rGen) posicion at: rPosicion put: 1]! !
+!Poblacion categoriesFor: #cromosomas!accessing!public! !
+!Poblacion categoriesFor: #cromosomas:!accessing!public! !
 !Poblacion categoriesFor: #initialize!public! !
+!Poblacion categoriesFor: #mutate!accessing!public! !
 
 !Poblacion class methodsFor!
 

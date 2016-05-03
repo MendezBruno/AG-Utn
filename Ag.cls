@@ -59,20 +59,20 @@ seleccion
 
 seleccion: anObject
 	seleccion := anObject! !
-!Ag categoriesFor: #aptitud!accessing!private! !
-!Ag categoriesFor: #aptitud:!accessing!private! !
+!Ag categoriesFor: #aptitud!accessing!public! !
+!Ag categoriesFor: #aptitud:!accessing!public! !
 !Ag categoriesFor: #convertir_a_decimal:!public! !
-!Ag categoriesFor: #cruzamiento!accessing!private! !
-!Ag categoriesFor: #cruzamiento:!accessing!private! !
+!Ag categoriesFor: #cruzamiento!accessing!public! !
+!Ag categoriesFor: #cruzamiento:!accessing!public! !
 !Ag categoriesFor: #initialize!public! !
-!Ag categoriesFor: #mutacion!accessing!private! !
-!Ag categoriesFor: #mutacion:!accessing!private! !
-!Ag categoriesFor: #poblacion_seleccionada!accessing!private! !
-!Ag categoriesFor: #poblacion_seleccionada:!accessing!private! !
-!Ag categoriesFor: #poblacionInicial!accessing!private! !
-!Ag categoriesFor: #poblacionInicial:!accessing!private! !
-!Ag categoriesFor: #seleccion!accessing!private! !
-!Ag categoriesFor: #seleccion:!accessing!private! !
+!Ag categoriesFor: #mutacion!accessing!public! !
+!Ag categoriesFor: #mutacion:!accessing!public! !
+!Ag categoriesFor: #poblacion_seleccionada!accessing!public! !
+!Ag categoriesFor: #poblacion_seleccionada:!accessing!public! !
+!Ag categoriesFor: #poblacionInicial!accessing!public! !
+!Ag categoriesFor: #poblacionInicial:!accessing!public! !
+!Ag categoriesFor: #seleccion!accessing!public! !
+!Ag categoriesFor: #seleccion:!accessing!public! !
 
 !Ag class methodsFor!
 
