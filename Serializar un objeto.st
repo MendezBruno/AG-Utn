@@ -13,7 +13,7 @@ file asString.
 FileStream write: file .
 
 
-fileOut :=FileStream write: 'C:\Users\bruno\prueba3'.
+fileOut :=FileStream write: 'C:\Users\bruno\poblacion'.
 fileOut nextPutAll:  (ODBSerializer serializeToBytes: animal).
 fileOut flush; close.
 fileIn:= FileStream read: 'C:\Users\bruno\prueba3' . 

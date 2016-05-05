@@ -28,7 +28,8 @@ package globalAliases: (Set new
 	yourself).
 
 package setPrerequisites: (IdentitySet new
-	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
+	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
+	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Contributions\ITC Gorisek\OmniBase';
 	yourself).
 
 package!
@@ -36,7 +37,7 @@ package!
 "Class Definitions"!
 
 Model subclass: #Ag
-	instanceVariableNames: 'poblacionInicial poblacion_seleccionada mutacion cruzamiento seleccion aptitud'
+	instanceVariableNames: 'poblacionInicial poblacionSeleccionada poblacionMundial mutacion cruzamiento seleccion aptitud'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!

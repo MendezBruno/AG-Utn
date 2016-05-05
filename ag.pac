@@ -28,7 +28,8 @@ package globalAliases: (Set new
 	yourself).
 
 package setPrerequisites: (IdentitySet new
-	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
+	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
+	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Contributions\ITC Gorisek\OmniBase';
 	yourself).
 
 package!
@@ -36,7 +37,7 @@ package!
 "Class Definitions"!
 
 Model subclass: #Ag
-	instanceVariableNames: 'poblacionInicial poblacion_seleccionada mutacion cruzamiento seleccion aptitud'
+	instanceVariableNames: 'poblacionInicial poblacionSeleccionada poblacionMundial mutacion cruzamiento seleccion aptitud'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -128,6 +129,12 @@ aptitud
 aptitud: anObject
 	aptitud := anObject!
 
+cargarPoblacion
+|fileIn byteArray|
+fileIn:= FileStream read: 'C:\Users\bruno\prueba3' . 
+byteArray:= fileIn collection asByteArray.
+poblacionMundial := ODBDeserializer deserializeFromBytes:byteArray.!
+
 convertir_a_decimal: unArray
 	| iteracion acum |
 	iteracion := 0.
@@ -144,9 +151,11 @@ cruzamiento
 cruzamiento: anObject
 	cruzamiento := anObject!
 
-initialize
-	self aptitud: Aptitud new.
-	self seleccion: Torneo new.!
+guardarPoblacion
+|fileOut|
+fileOut :=FileStream write: 'poblacion'.
+fileOut nextPutAll:  (ODBSerializer serializeToBytes: self poblacionMundial).
+fileOut flush; close.!
 
 mutacion
 	^mutacion!
@@ -154,44 +163,46 @@ mutacion
 mutacion: anObject
 	mutacion := anObject!
 
-poblacion_seleccionada
-	^poblacion_seleccionada!
-
-poblacion_seleccionada: anObject
-	poblacion_seleccionada := anObject!
-
 poblacionInicial
 	^poblacionInicial!
 
 poblacionInicial: anObject
 	poblacionInicial := anObject!
 
+poblacionMundial
+	^poblacionMundial!
+
+poblacionMundial: anObject
+	poblacionMundial := anObject!
+
+poblacionSeleccionada
+	^poblacionSeleccionada!
+
+poblacionSeleccionada: anObject
+	poblacionSeleccionada := anObject!
+
 seleccion
 	^seleccion!
 
 seleccion: anObject
 	seleccion := anObject! !
-!Ag categoriesFor: #aptitud!accessing!public! !
-!Ag categoriesFor: #aptitud:!accessing!public! !
+!Ag categoriesFor: #aptitud!accessing!private! !
+!Ag categoriesFor: #aptitud:!accessing!private! !
+!Ag categoriesFor: #cargarPoblacion!public! !
 !Ag categoriesFor: #convertir_a_decimal:!public! !
-!Ag categoriesFor: #cruzamiento!accessing!public! !
-!Ag categoriesFor: #cruzamiento:!accessing!public! !
-!Ag categoriesFor: #initialize!public! !
-!Ag categoriesFor: #mutacion!accessing!public! !
-!Ag categoriesFor: #mutacion:!accessing!public! !
-!Ag categoriesFor: #poblacion_seleccionada!accessing!public! !
-!Ag categoriesFor: #poblacion_seleccionada:!accessing!public! !
-!Ag categoriesFor: #poblacionInicial!accessing!public! !
-!Ag categoriesFor: #poblacionInicial:!accessing!public! !
-!Ag categoriesFor: #seleccion!accessing!public! !
-!Ag categoriesFor: #seleccion:!accessing!public! !
-
-!Ag class methodsFor!
-
-new
-	^super new initialize
-! !
-!Ag class categoriesFor: #new!public! !
+!Ag categoriesFor: #cruzamiento!accessing!private! !
+!Ag categoriesFor: #cruzamiento:!accessing!private! !
+!Ag categoriesFor: #guardarPoblacion!public! !
+!Ag categoriesFor: #mutacion!accessing!private! !
+!Ag categoriesFor: #mutacion:!accessing!private! !
+!Ag categoriesFor: #poblacionInicial!accessing!private! !
+!Ag categoriesFor: #poblacionInicial:!accessing!private! !
+!Ag categoriesFor: #poblacionMundial!accessing!private! !
+!Ag categoriesFor: #poblacionMundial:!accessing!private! !
+!Ag categoriesFor: #poblacionSeleccionada!accessing!private! !
+!Ag categoriesFor: #poblacionSeleccionada:!accessing!private! !
+!Ag categoriesFor: #seleccion!accessing!private! !
+!Ag categoriesFor: #seleccion:!accessing!private! !
 
 Aptitud guid: (GUID fromString: '{8AC60A11-E710-4988-8D36-E944B7CB5A46}')!
 Aptitud comment: 'Calcula la funcion de aptitud de los cromsomas tieendo en cuenta los datos de su diccionario'!
@@ -199,10 +210,12 @@ Aptitud comment: 'Calcula la funcion de aptitud de los cromsomas tieendo en cuen
 !Aptitud methodsFor!
 
 aptitud: unCromosoma
-
-	^(((self dicDeFunciones at: 1) aptitudDe: (unCromosoma dameTusGenesDesde: 1 a: 1))
-		+ ((self dicDeFunciones at: 2) aptitudDe: (unCromosoma dameTusGenesDesde: 2 a: 3))
-			+ ((self dicDeFunciones at: 4) aptitudDe: (unCromosoma dameTusGenesDesde: 4 a: 6)))!
+	(self dicDeFunciones at:1) aptitudDe: (unCromosoma dameTusGenesDesde: 1 a:1).
+	(self dicDeFunciones at:2) aptitudDe: (unCromosoma dameTusGenesDesde: 1 a:1).
+	(self dicDeFunciones at:4) aptitudDe: (unCromosoma dameTusGenesDesde: 1 a:1).
+	
+	
+!
 
 definirFunciones
 
@@ -234,15 +247,6 @@ new
 AptitudBooleanTrue guid: (GUID fromString: '{E1972F12-E1FB-413D-BA12-B84394E7A069}')!
 AptitudBooleanTrue comment: ''!
 !AptitudBooleanTrue categoriesForClass!MVP-Models! !
-!AptitudBooleanTrue methodsFor!
-
-aptitudDe: listaGenes
-	| acum |
-	acum:=0.
-	listaGenes do: [:gen | (gen includes: 0) ifTrue: [acum := acum - 50] ifFalse: [acum := acum + 100]].
-	^acum! !
-!AptitudBooleanTrue categoriesFor: #aptitudDe:!public! !
-
 !AptitudBooleanTrue class methodsFor!
 
 aptitudDe: listaGenes
@@ -258,31 +262,6 @@ AptitudEstrategy comment: ''!
 AptitudSuperposicion guid: (GUID fromString: '{80BA86AB-DFA6-4F06-BC41-EAEF711C1C81}')!
 AptitudSuperposicion comment: ''!
 !AptitudSuperposicion categoriesForClass!MVP-Models! !
-!AptitudSuperposicion methodsFor!
-
-aptitudDe: listaGenes
-	^(self genesIguales: listaGenes) * -125!
-
-convertir_a_decimal: unArray
-	| iteracion acum |
-	iteracion := 0.
-	acum := 0.
-	unArray do: 
-			[:unValor |
-			unValor = 1 ifTrue: [acum := acum + (2 ** iteracion)].
-			iteracion := iteracion + 1].
-	^acum!
-
-genesIguales:listaGenes
-|listaNumeros |
-listaNumeros:= OrderedCollection new.
-listaGenes do:[:gen| listaNumeros add: ( self convertir_a_decimal:gen)].
-^(listaNumeros size)- (listaNumeros asSet size)
-! !
-!AptitudSuperposicion categoriesFor: #aptitudDe:!public! !
-!AptitudSuperposicion categoriesFor: #convertir_a_decimal:!public! !
-!AptitudSuperposicion categoriesFor: #genesIguales:!public! !
-
 !AptitudSuperposicion class methodsFor!
 
 aptitudDe: listaGenes
@@ -291,99 +270,50 @@ aptitudDe: listaGenes
 
 !
 
-convertir_a_decimal: unArray
-	| iteracion acum |
-	iteracion := 0.
-	acum := 0.
-	unArray do: 
-			[:unValor |
-			unValor = 1 ifTrue: [acum := acum + (2 ** iteracion)].
-			iteracion := iteracion + 1].
-	^acum!
-
 genesIguales:listaGenes
 |listaNumeros |
 listaNumeros:= OrderedCollection new.
-listaGenes do:[:gen| listaNumeros add: ( self convertir_a_decimal:gen)].
+listaGenes do:[:gen| listaNumeros add: ("genDeByteaInt:"gen)].
 ^(listaNumeros size)- (listaNumeros asSet size)
 ! !
 !AptitudSuperposicion class categoriesFor: #aptitudDe:!public! !
-!AptitudSuperposicion class categoriesFor: #convertir_a_decimal:!public! !
 !AptitudSuperposicion class categoriesFor: #genesIguales:!public! !
 
 AptitudValoracion guid: (GUID fromString: '{739A3F71-BF23-494C-9922-7A57F172BD1A}')!
 AptitudValoracion comment: ''!
 !AptitudValoracion categoriesForClass!MVP-Models! !
-!AptitudValoracion methodsFor!
-
-aptitudDe: listaGenes
-	| acum |
-	acum := 0.
-	listaGenes do: [:gen |acum := acum + (self convertir_a_decimal: gen)].
-	^acum * 50!
-
-convertir_a_decimal: unArray
-	| iteracion acum |
-	iteracion := 0.
-	acum := 0.
-	unArray do: 
-			[:unValor |
-			unValor = 1 ifTrue: [acum := acum + (2 ** iteracion)].
-			iteracion := iteracion + 1].
-	^acum! !
-!AptitudValoracion categoriesFor: #aptitudDe:!public! !
-!AptitudValoracion categoriesFor: #convertir_a_decimal:!public! !
-
 !AptitudValoracion class methodsFor!
 
 aptitudDe: listaGenes
 	| acum |
 	acum := 0.
-	listaGenes do: [:gen | acum := acum + (self convertir_a_decimal: gen)].
+	listaGenes do: [:gen | acum := acum + (self valorDe: gen)].
 	^acum * 50!
 
-convertir_a_decimal: unArray
-	| iteracion acum |
-	iteracion := 0.
-	acum := 0.
-	unArray do: 
-			[:unValor |
-			unValor = 1 ifTrue: [acum := acum + (2 ** iteracion)].
-			iteracion := iteracion + 1].
-	^acum! !
+valorDe: gen
+|acum|
+acum:=0.
+
+	^acum
+		! !
 !AptitudValoracion class categoriesFor: #aptitudDe:!public! !
-!AptitudValoracion class categoriesFor: #convertir_a_decimal:!public! !
+!AptitudValoracion class categoriesFor: #valorDe:!public! !
 
 Cromosoma guid: (GUID fromString: '{A176475E-F6E0-43D0-BF7F-1D2D90E925A1}')!
 Cromosoma comment: ''!
 !Cromosoma categoriesForClass!Unclassified! !
 !Cromosoma methodsFor!
 
-aptitud
-	^aptitud!
-
 aptitud: anObject
 	aptitud := anObject!
-
-dameTusGenesDesde: start a: stop
-	| listaGenes |
-	listaGenes := OrderedCollection new.
-	genes do: [:gen |listaGenes add: (gen posicion copyFrom: start to: stop)].
-	^listaGenes!
-
-genes
-	^genes!
 
 genes: anObject
 	genes := anObject!
 
 initialize
 	self genes: OrderedCollection new.! !
-!Cromosoma categoriesFor: #aptitud!public! !
 !Cromosoma categoriesFor: #aptitud:!public! !
-!Cromosoma categoriesFor: #dameTusGenesDesde:a:!public! !
-!Cromosoma categoriesFor: #genes!public! !
-!Cromosoma categoriesFor: #genes:!accessing!public! !
+!Cromosoma categoriesFor: #genes:!accessing!private! !
 !Cromosoma categoriesFor: #initialize!public! !
 
 !Cromosoma class methodsFor!
@@ -449,21 +379,10 @@ cromosomas: anObject
 	cromosomas := anObject!
 
 initialize
-	self cromosomas: OrderedCollection new.!
-
-mutate
-	| rGenerator rCromo rGen rPosicion |
-	rGenerator := Random new.
-	rCromo := (rGenerator next * (cromosomas size-1)) rounded+1.
-	rGen := (rGenerator next * 2) rounded+1.
-	rPosicion := (rGenerator next * 5) rounded+1.
-	(((self cromosomas at: rCromo) genes at: rGen) posicion at: rPosicion) = 1
-		ifTrue: [((self cromosomas at: rCromo) genes at: rGen) posicion at: rPosicion put: 0]
-		ifFalse: [((self cromosomas at: rCromo) genes at: rGen) posicion at: rPosicion put: 1]! !
-!Poblacion categoriesFor: #cromosomas!accessing!public! !
-!Poblacion categoriesFor: #cromosomas:!accessing!public! !
+	self cromosomas: OrderedCollection new.! !
+!Poblacion categoriesFor: #cromosomas!accessing!private! !
+!Poblacion categoriesFor: #cromosomas:!accessing!private! !
 !Poblacion categoriesFor: #initialize!public! !
-!Poblacion categoriesFor: #mutate!accessing!public! !
 
 !Poblacion class methodsFor!
 

@@ -10,31 +10,16 @@ Cromosoma comment: ''!
 !Cromosoma categoriesForClass!Unclassified! !
 !Cromosoma methodsFor!
 
-aptitud
-	^aptitud!
-
 aptitud: anObject
 	aptitud := anObject!
-
-dameTusGenesDesde: start a: stop
-	| listaGenes |
-	listaGenes := OrderedCollection new.
-	genes do: [:gen |listaGenes add: (gen posicion copyFrom: start to: stop)].
-	^listaGenes!
-
-genes
-	^genes!
 
 genes: anObject
 	genes := anObject!
 
 initialize
 	self genes: OrderedCollection new.! !
-!Cromosoma categoriesFor: #aptitud!public! !
 !Cromosoma categoriesFor: #aptitud:!public! !
-!Cromosoma categoriesFor: #dameTusGenesDesde:a:!public! !
-!Cromosoma categoriesFor: #genes!public! !
-!Cromosoma categoriesFor: #genes:!accessing!public! !
+!Cromosoma categoriesFor: #genes:!accessing!private! !
 !Cromosoma categoriesFor: #initialize!public! !
 
 !Cromosoma class methodsFor!
