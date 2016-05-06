@@ -13,14 +13,14 @@ TestAptitud comment: ''!
 setUp
 	| cromosoma1 cromosoma2 |
 	poblacion := Poblacion new.
-	cromosoma1 := Gen new.
-	cromosoma1 carateristicas add: (Caracteristica new: #(1 0 1 0 0 1)).
-	cromosoma1 carateristicas add: (Caracteristica new: #(1 1 0 0 1 0)).
-	cromosoma1 carateristicas add: (Caracteristica new: #(0 1 1 0 1 1)).
-	cromosoma2 := Gen new.
-	cromosoma2 carateristicas add: (Caracteristica new: #(1 0 0 1 0 0)).
-	cromosoma2 carateristicas add: (Caracteristica new: #(0 0 1 0 1 1)).
-	cromosoma2 carateristicas add: (Caracteristica new: #(1 0 1 1 1 1)).
+	cromosoma1 := Cromosoma new.
+	cromosoma1 carateristicas add: (Gen new: #(1 0 1 0 0 1)).
+	cromosoma1 carateristicas add: (Gen new: #(1 1 0 0 1 0)).
+	cromosoma1 carateristicas add: (Gen new: #(0 1 1 0 1 1)).
+	cromosoma2 := Cromosoma new.
+	cromosoma2 carateristicas add: (Gen new: #(1 0 0 1 0 0)).
+	cromosoma2 carateristicas add: (Gen new: #(0 0 1 0 1 1)).
+	cromosoma2 carateristicas add: (Gen new: #(1 0 1 1 1 1)).
 	poblacion cromosomas add: cromosoma1.
 	poblacion cromosomas add: cromosoma2!
 

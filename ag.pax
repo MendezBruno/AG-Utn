@@ -11,7 +11,7 @@ package classNames
 	add: #AptitudEstrategy;
 	add: #AptitudSuperposicion;
 	add: #AptitudValoracion;
-	add: #Caracteristica;
+	add: #Cromosoma;
 	add: #CruzamientoRandom;
 	add: #CruzamientoStrategy;
 	add: #Gen;
@@ -66,8 +66,8 @@ Model subclass: #AptitudValoracion
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
-Model subclass: #Caracteristica
-	instanceVariableNames: 'nombre posicion'
+Model subclass: #Cromosoma
+	instanceVariableNames: 'nombre genes aptitud'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -77,7 +77,7 @@ Model subclass: #CruzamientoStrategy
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
 Model subclass: #Gen
-	instanceVariableNames: 'nombre caracteristicas aptitud'
+	instanceVariableNames: 'nombre posicion'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!

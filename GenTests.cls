@@ -11,11 +11,11 @@ GenTests comment: ''!
 !GenTests methodsFor!
 
 setUp
-	gen := Caracteristica new: 5!
+	gen := Gen new: 5!
 
 testNew
 	| genAux |
-	genAux := Caracteristica new: 7.
+	genAux := Gen new: 7.
 	self assert: genAux posicion size = 7! !
 !GenTests categoriesFor: #setUp!public! !
 !GenTests categoriesFor: #testNew!public! !

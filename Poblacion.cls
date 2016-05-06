@@ -31,6 +31,7 @@ mutate
 !Poblacion categoriesFor: #cromosomas!accessing!public! !
 !Poblacion categoriesFor: #cromosomas:!accessing!public! !
 !Poblacion categoriesFor: #initialize!public! !
+!Poblacion categoriesFor: #mutate!accessing!public! !
 
 !Poblacion class methodsFor!
 

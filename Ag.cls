@@ -10,6 +10,10 @@ Ag comment: ''!
 !Ag categoriesForClass!Unclassified! !
 !Ag methodsFor!
 
+agregarGen: unGen
+	self poblacionMundial add: unGen.
+	self guardarPoblacion.!
+
 aptitud
 	^aptitud!
 
@@ -34,7 +38,7 @@ convertir_a_decimal: unArray
 
 crearGen: unNombre
 	| gen |
-	gen := Gen new.
+	gen := Gen new: (Array new: 6).
 	gen nombre: unNombre.
 	^gen!
 
@@ -52,7 +56,8 @@ fileOut flush; close.!
 
 initialize
 	self aptitud: Aptitud new.
-	self seleccion: Torneo new.!
+	self seleccion: Torneo new.
+	self poblacionMundial: OrderedCollection new.!
 
 mutacion
 	^mutacion!
@@ -83,6 +88,7 @@ seleccion
 
 seleccion: anObject
 	seleccion := anObject! !
+!Ag categoriesFor: #agregarGen:!public! !
 !Ag categoriesFor: #aptitud!accessing!public! !
 !Ag categoriesFor: #aptitud:!accessing!public! !
 !Ag categoriesFor: #cargarPoblacion!public! !

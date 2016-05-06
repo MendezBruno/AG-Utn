@@ -11,7 +11,7 @@ package classNames
 	add: #AptitudEstrategy;
 	add: #AptitudSuperposicion;
 	add: #AptitudValoracion;
-	add: #Caracteristica;
+	add: #Cromosoma;
 	add: #CruzamientoRandom;
 	add: #CruzamientoStrategy;
 	add: #Gen;
@@ -66,8 +66,8 @@ Model subclass: #AptitudValoracion
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
-Model subclass: #Caracteristica
-	instanceVariableNames: 'nombre posicion'
+Model subclass: #Cromosoma
+	instanceVariableNames: 'nombre genes aptitud'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -77,7 +77,7 @@ Model subclass: #CruzamientoStrategy
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
 Model subclass: #Gen
-	instanceVariableNames: 'nombre caracteristicas aptitud'
+	instanceVariableNames: 'nombre posicion'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -123,6 +123,10 @@ Ag comment: ''!
 !Ag categoriesForClass!Unclassified! !
 !Ag methodsFor!
 
+agregarGen: unGen
+	self poblacionMundial add: unGen.
+	self guardarPoblacion.!
+
 aptitud
 	^aptitud!
 
@@ -147,7 +151,7 @@ convertir_a_decimal: unArray
 
 crearGen: unNombre
 	| gen |
-	gen := Gen new.
+	gen := Gen new: (Array new: 6).
 	gen nombre: unNombre.
 	^gen!
 
@@ -165,7 +169,8 @@ fileOut flush; close.!
 
 initialize
 	self aptitud: Aptitud new.
-	self seleccion: Torneo new.!
+	self seleccion: Torneo new.
+	self poblacionMundial: OrderedCollection new.!
 
 mutacion
 	^mutacion!
@@ -196,6 +201,7 @@ seleccion
 
 seleccion: anObject
 	seleccion := anObject! !
+!Ag categoriesFor: #agregarGen:!public! !
 !Ag categoriesFor: #aptitud!accessing!public! !
 !Ag categoriesFor: #aptitud:!accessing!public! !
 !Ag categoriesFor: #cargarPoblacion!public! !
@@ -383,10 +389,70 @@ convertir_a_decimal: unArray
 !AptitudValoracion class categoriesFor: #aptitudDe:!public! !
 !AptitudValoracion class categoriesFor: #convertir_a_decimal:!public! !
 
-Caracteristica guid: (GUID fromString: '{81058575-B619-4315-AF48-DDD1A55C3CA6}')!
-Caracteristica comment: 'Esta Clase se usa para definir cada gen que compondran los cromosomas.'!
-!Caracteristica categoriesForClass!Unclassified! !
-!Caracteristica methodsFor!
+Cromosoma guid: (GUID fromString: '{A176475E-F6E0-43D0-BF7F-1D2D90E925A1}')!
+Cromosoma comment: ''!
+!Cromosoma categoriesForClass!Unclassified! !
+!Cromosoma methodsFor!
+
+aptitud
+	^aptitud!
+
+aptitud: anObject
+	aptitud := anObject!
+
+dameTusCaracteristicasDesde: start a: stop
+	| listaGenes |
+	listaGenes := OrderedCollection new.
+	genes do: [:gen| listaGenes add: (gen posicion copyFrom: start to: stop)].
+	^listaGenes!
+
+genes
+	^genes!
+
+genes: anObject
+	genes := anObject!
+
+initialize
+	self genes: OrderedCollection new!
+
+nombre
+	^nombre!
+
+nombre: anObject
+	nombre := anObject! !
+!Cromosoma categoriesFor: #aptitud!public! !
+!Cromosoma categoriesFor: #aptitud:!public! !
+!Cromosoma categoriesFor: #dameTusCaracteristicasDesde:a:!public! !
+!Cromosoma categoriesFor: #genes!public! !
+!Cromosoma categoriesFor: #genes:!accessing!public! !
+!Cromosoma categoriesFor: #initialize!public! !
+!Cromosoma categoriesFor: #nombre!accessing!public! !
+!Cromosoma categoriesFor: #nombre:!accessing!public! !
+
+!Cromosoma class methodsFor!
+
+new
+	^super new initialize
+! !
+!Cromosoma class categoriesFor: #new!public! !
+
+CruzamientoStrategy guid: (GUID fromString: '{83E98813-6E16-4E1A-84FC-AC76A766A268}')!
+CruzamientoStrategy comment: ''!
+!CruzamientoStrategy categoriesForClass!Unclassified! !
+Gen guid: (GUID fromString: '{81058575-B619-4315-AF48-DDD1A55C3CA6}')!
+Gen comment: 'Esta Clase se usa para definir cada gen que compondran los cromosomas.'!
+!Gen categoriesForClass!Unclassified! !
+!Gen methodsFor!
+
+diaSemana: unArray
+	self posicion at:4 put: (unArray at: 1).
+	self posicion at:5 put: (unArray at: 2).
+	self posicion at:6 put: (unArray at: 3).!
+
+dificultad:unArray
+	self posicion at:2 put: (unArray at: 1).
+	self posicion at:3 put: (unArray at: 2).
+	!
 
 nombre
 	"Answer the value of the receiver's 'nombre' instance variable."
@@ -406,62 +472,26 @@ posicion
 posicion: anObject
 	"Set the value of the receiver's 'posicion' instance variable to the argument."
 
-	posicion := anObject! !
-!Caracteristica categoriesFor: #nombre!accessing!public! !
-!Caracteristica categoriesFor: #nombre:!accessing!public! !
-!Caracteristica categoriesFor: #posicion!accessing!public! !
-!Caracteristica categoriesFor: #posicion:!accessing!public! !
+	posicion := anObject!
 
-!Caracteristica class methodsFor!
+tieneFinal:aBoolean
+	aBoolean ifTrue: [self posicion at:1 put:0].! !
+!Gen categoriesFor: #diaSemana:!public! !
+!Gen categoriesFor: #dificultad:!public! !
+!Gen categoriesFor: #nombre!accessing!public! !
+!Gen categoriesFor: #nombre:!accessing!public! !
+!Gen categoriesFor: #posicion!accessing!public! !
+!Gen categoriesFor: #posicion:!accessing!public! !
+!Gen categoriesFor: #tieneFinal:!public! !
+
+!Gen class methodsFor!
 
 new: unArray
 	|gen|
 	gen:= self new.
 	gen posicion: unArray.
 	^gen! !
-!Caracteristica class categoriesFor: #new:!public! !
-
-CruzamientoStrategy guid: (GUID fromString: '{83E98813-6E16-4E1A-84FC-AC76A766A268}')!
-CruzamientoStrategy comment: ''!
-!CruzamientoStrategy categoriesForClass!Unclassified! !
-Gen guid: (GUID fromString: '{A176475E-F6E0-43D0-BF7F-1D2D90E925A1}')!
-Gen comment: ''!
-!Gen categoriesForClass!Unclassified! !
-!Gen methodsFor!
-
-aptitud
-	^aptitud!
-
-aptitud: anObject
-	aptitud := anObject!
-
-caracteristicas: anObject
-	caracteristicas := anObject!
-
-carateristicas
-	^caracteristicas!
-
-dameTusCaracteristicasDesde: start a: stop
-	| listaGenes |
-	listaGenes := OrderedCollection new.
-	caracteristicas do: [:caracteristica | listaGenes add: (caracteristica posicion copyFrom: start to: stop)].
-	^listaGenes!
-
-initialize
-	self caracteristicas: OrderedCollection new! !
-!Gen categoriesFor: #aptitud!public! !
-!Gen categoriesFor: #aptitud:!public! !
-!Gen categoriesFor: #caracteristicas:!accessing!public! !
-!Gen categoriesFor: #carateristicas!public! !
-!Gen categoriesFor: #dameTusCaracteristicasDesde:a:!public! !
-!Gen categoriesFor: #initialize!public! !
-
-!Gen class methodsFor!
-
-new
-	^super new initialize
-! !
-!Gen class categoriesFor: #new!public! !
+!Gen class categoriesFor: #new:!public! !
 
 MutacionEstrategy guid: (GUID fromString: '{0EDDE7A8-F69A-495C-8B62-ACB0B6E8A9E2}')!
 MutacionEstrategy comment: ''!
