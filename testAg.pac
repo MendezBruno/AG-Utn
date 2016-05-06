@@ -18,7 +18,7 @@ package globalAliases: (Set new
 
 package setPrerequisites: (IdentitySet new
 	add: 'ag';
-	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Contributions\Camp Smalltalk\SUnit\SUnit';
+	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Contributions\Camp Smalltalk\SUnit\SUnit';
 	yourself).
 
 package!

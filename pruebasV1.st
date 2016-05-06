@@ -15,13 +15,18 @@
 	poblacion mutate. " funciona con arrays de en serio" 
 	
 	torneo poblacion: poblacion.
-	torneo seleccionar
+	torneo seleccionar.
+	File exists: 'poblacion'.
 
 	"Prueba para obtener un gen"
 	poblacion cromosomas first genes first posicion at:0.
 
 ShellAgPresenter showOn: ag.
+
 ag guardarPoblacion.
+ag cargarPoblacion.
+
+
 
 | r s |
 

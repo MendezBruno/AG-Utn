@@ -20,6 +20,9 @@ aptitud
 aptitud: anObject
 	aptitud := anObject!
 
+buscarGen: unGen
+^poblacionMundial detect: [:each | (self convertir_a_decimal: each posicion) =  (self convertir_a_decimal: unGen posicion) ]!
+
 cargarPoblacion
 	| fileIn byteArray |
 	fileIn := FileStream read: 'poblacion'.
@@ -48,11 +51,24 @@ cruzamiento
 cruzamiento: anObject
 	cruzamiento := anObject!
 
+existeGen: unGen
+^poblacionMundial anySatisfy: [:each | (self convertir_a_decimal: each posicion) =  (self convertir_a_decimal: unGen posicion) ]!
+
 guardarPoblacion
-|fileOut|
-fileOut :=FileStream write: 'poblacion'.
-fileOut nextPutAll:  (ODBSerializer serializeToBytes: self poblacionMundial).
-fileOut flush; close.!
+	| fileOut |
+	(File exists: 'poblacion')
+		ifTrue: 
+			[fileOut := FileStream write: 'poblacion'.
+			fileOut nextPutAll: (ODBSerializer serializeToBytes: self poblacionMundial).
+			fileOut
+				flush;
+				close]
+		ifFalse: 
+			[fileOut := FileStream write: 'poblacion'.
+			fileOut nextPutAll: (ODBSerializer serializeToBytes: self poblacionMundial).
+			fileOut
+				flush;
+				close]!
 
 initialize
 	self aptitud: Aptitud new.
@@ -91,11 +107,13 @@ seleccion: anObject
 !Ag categoriesFor: #agregarGen:!public! !
 !Ag categoriesFor: #aptitud!accessing!public! !
 !Ag categoriesFor: #aptitud:!accessing!public! !
+!Ag categoriesFor: #buscarGen:!public! !
 !Ag categoriesFor: #cargarPoblacion!public! !
 !Ag categoriesFor: #convertir_a_decimal:!public! !
 !Ag categoriesFor: #crearGen:!public! !
 !Ag categoriesFor: #cruzamiento!accessing!public! !
 !Ag categoriesFor: #cruzamiento:!accessing!public! !
+!Ag categoriesFor: #existeGen:!public! !
 !Ag categoriesFor: #guardarPoblacion!public! !
 !Ag categoriesFor: #initialize!public! !
 !Ag categoriesFor: #mutacion!accessing!public! !

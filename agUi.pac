@@ -20,14 +20,14 @@ package globalAliases: (Set new
 	yourself).
 
 package setPrerequisites: (IdentitySet new
-	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
-	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Presenters\Boolean\Dolphin Boolean Presenter';
-	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Models\List\Dolphin List Models';
-	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Presenters\List\Dolphin List Presenter';
-	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Base\Dolphin MVP Base';
-	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Presenters\Text\Dolphin Text Presenter';
-	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Type Converters\Dolphin Type Converters';
-	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Models\Value\Dolphin Value Models';
+	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
+	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Presenters\Boolean\Dolphin Boolean Presenter';
+	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Models\List\Dolphin List Models';
+	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Presenters\List\Dolphin List Presenter';
+	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Base\Dolphin MVP Base';
+	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Presenters\Text\Dolphin Text Presenter';
+	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Type Converters\Dolphin Type Converters';
+	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Models\Value\Dolphin Value Models';
 	yourself).
 
 package!
@@ -45,7 +45,7 @@ Shell subclass: #ShellCargarPoblacionPresenter
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
 Shell subclass: #ShellPoblacionActualPresenter
-	instanceVariableNames: ''
+	instanceVariableNames: 'ctrlNombreMateria ctrlLabelFinal ctrlLabelDificultad ctrlLabelDiaSemana listaMaterias'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -82,8 +82,17 @@ ShellAgPresenter comment: ''!
 !ShellAgPresenter methodsFor!
 
 cargarPoblacionShell
-	ShellCargarPoblacionPresenter showOn: self model.! !
+	ShellCargarPoblacionPresenter showOn: self model.!
+
+onViewOpened
+	super onViewOpened.
+	(File exists: 'poblacion') ifTrue: [ self model cargarPoblacion].!
+
+verPoblacionActualShell
+	ShellPoblacionActualPresenter showOn: self model.! !
 !ShellAgPresenter categoriesFor: #cargarPoblacionShell!public! !
+!ShellAgPresenter categoriesFor: #onViewOpened!public! !
+!ShellAgPresenter categoriesFor: #verPoblacionActualShell!public! !
 
 !ShellAgPresenter class methodsFor!
 
@@ -184,9 +193,19 @@ guardarMateria
 	| auxGen |
 	auxGen := self model crearGen: ctrlNombreMateria value.
 	auxGen tieneFinal: ctrlCheckBoxFinal value.
-	auxGen dificultad: (self elemDificultad at: ctrlComboBoxDificultad selection).
-	auxGen diaSemana: (self elemDiaSemana at: ctrlComboBoxDiaSemana selection).
-	self model agregarGen: auxGen.!
+	auxGen dificultad: (self elemDificultad at: ctrlComboBoxDificultad selection)
+		tipo: ctrlComboBoxDificultad selection.
+	auxGen diaSemana: (self elemDiaSemana at: ctrlComboBoxDiaSemana selection)
+		tipo: ctrlComboBoxDiaSemana selection.
+	(self model existeGen: auxGen)
+		ifTrue: 
+			[self model agregarGen: auxGen.
+			MessageBox notify: 'Materia guardada exitosamente' caption: 'Algoritmo Genético']
+		ifFalse: [MessageBox errorMsg: 'Materia ya existe' caption: 'Algoritmo Genético']!
+
+habilitarBotonGuardar
+	^(ctrlNombreMateria ~= '' and: [ctrlComboBoxDiaSemana hasSelection])
+		and: [ctrlComboBoxDificultad hasSelection]!
 
 onViewOpened
 	super onViewOpened.
@@ -194,7 +213,15 @@ onViewOpened
 	self cargaDiaSemana
 	
 	
-	! !
+	!
+
+queryCommand: aCommandQuery 
+	| command |
+	command := aCommandQuery commandSymbol.
+	#guardarMateria == command 
+		ifTrue: 
+			[aCommandQuery isEnabled: self habilitarBotonGuardar.
+			^true].! !
 !ShellCargarPoblacionPresenter categoriesFor: #cargaDiaSemana!public! !
 !ShellCargarPoblacionPresenter categoriesFor: #cargarCombos!public! !
 !ShellCargarPoblacionPresenter categoriesFor: #cargarDificultad!public! !
@@ -212,7 +239,9 @@ onViewOpened
 !ShellCargarPoblacionPresenter categoriesFor: #elemDificultad!accessing!public! !
 !ShellCargarPoblacionPresenter categoriesFor: #elemDificultad:!accessing!public! !
 !ShellCargarPoblacionPresenter categoriesFor: #guardarMateria!public! !
+!ShellCargarPoblacionPresenter categoriesFor: #habilitarBotonGuardar!public! !
 !ShellCargarPoblacionPresenter categoriesFor: #onViewOpened!public! !
+!ShellCargarPoblacionPresenter categoriesFor: #queryCommand:!public! !
 
 !ShellCargarPoblacionPresenter class methodsFor!
 
@@ -230,6 +259,94 @@ resource_Default_view
 ShellPoblacionActualPresenter guid: (GUID fromString: '{F5AC67BD-7BDE-4475-82F8-E5031EC3631A}')!
 ShellPoblacionActualPresenter comment: ''!
 !ShellPoblacionActualPresenter categoriesForClass!MVP-Presenters! !
+!ShellPoblacionActualPresenter methodsFor!
+
+borrarMateria
+	self model poblacionMundial remove: listaMaterias selection.
+	self listaMaterias list: self model poblacionMundial.
+	self listaMaterias view refreshContents.!
+
+cargarInfoMateria
+	ctrlNombreMateria value: listaMaterias selection nombre.
+	ctrlLabelFinal value: listaMaterias selection final.
+	ctrlLabelDificultad value: listaMaterias selection dificultad.
+	ctrlLabelDiaSemana value: listaMaterias selection dia.
+	!
+
+cargarMaterias
+	self listaMaterias list: self model poblacionMundial.
+	!
+
+createComponents
+	super createComponents.
+	ctrlNombreMateria := self add: TextPresenter new name: 'labelNombreMateria'.
+	ctrlLabelFinal:= self add: TextPresenter new name: 'labelTieneFinal'.
+	ctrlLabelDificultad:= self add: TextPresenter new name: 'labelDificultad'.
+	ctrlLabelDiaSemana:= self add: TextPresenter new name: 'labelDiaSemana'.
+	listaMaterias:= self add: ListPresenter new name: 'boxListaMaterias'.
+	!
+
+createSchematicWiring
+	"Create the trigger wiring for the receiver"
+
+	super createSchematicWiring.
+	listaMaterias 
+		when: #selectionChanged
+		send: #cargarInfoMateria
+		to: self.
+
+	!
+
+ctrlLabelDiaSemana
+	^ctrlLabelDiaSemana!
+
+ctrlLabelDiaSemana: anObject
+	ctrlLabelDiaSemana := anObject!
+
+ctrlLabelDificultad
+	^ctrlLabelDificultad!
+
+ctrlLabelDificultad: anObject
+	ctrlLabelDificultad := anObject!
+
+ctrlLabelFinal
+	^ctrlLabelFinal!
+
+ctrlLabelFinal: anObject
+	ctrlLabelFinal := anObject!
+
+ctrlNombreMateria
+	^ctrlNombreMateria!
+
+ctrlNombreMateria: anObject
+	ctrlNombreMateria := anObject!
+
+listaMaterias
+	^listaMaterias!
+
+listaMaterias: anObject
+	listaMaterias := anObject!
+
+onViewOpened
+	super onViewOpened.
+	self cargarMaterias.! !
+!ShellPoblacionActualPresenter categoriesFor: #borrarMateria!public! !
+!ShellPoblacionActualPresenter categoriesFor: #cargarInfoMateria!public! !
+!ShellPoblacionActualPresenter categoriesFor: #cargarMaterias!public! !
+!ShellPoblacionActualPresenter categoriesFor: #createComponents!public! !
+!ShellPoblacionActualPresenter categoriesFor: #createSchematicWiring!public! !
+!ShellPoblacionActualPresenter categoriesFor: #ctrlLabelDiaSemana!accessing!private! !
+!ShellPoblacionActualPresenter categoriesFor: #ctrlLabelDiaSemana:!accessing!private! !
+!ShellPoblacionActualPresenter categoriesFor: #ctrlLabelDificultad!accessing!private! !
+!ShellPoblacionActualPresenter categoriesFor: #ctrlLabelDificultad:!accessing!private! !
+!ShellPoblacionActualPresenter categoriesFor: #ctrlLabelFinal!accessing!private! !
+!ShellPoblacionActualPresenter categoriesFor: #ctrlLabelFinal:!accessing!private! !
+!ShellPoblacionActualPresenter categoriesFor: #ctrlNombreMateria!accessing!private! !
+!ShellPoblacionActualPresenter categoriesFor: #ctrlNombreMateria:!accessing!private! !
+!ShellPoblacionActualPresenter categoriesFor: #listaMaterias!accessing!private! !
+!ShellPoblacionActualPresenter categoriesFor: #listaMaterias:!accessing!private! !
+!ShellPoblacionActualPresenter categoriesFor: #onViewOpened!public! !
+
 !ShellPoblacionActualPresenter class methodsFor!
 
 resource_Default_view
@@ -240,7 +357,7 @@ resource_Default_view
 	ViewComposer openOn: (ResourceIdentifier class: self selector: #resource_Default_view)
 	"
 
-	^#(#'!!STL' 3 788558 10 ##(Smalltalk.STBViewProxy) 8 ##(Smalltalk.ShellView) 98 27 0 0 98 2 26214401 131073 416 0 524550 ##(Smalltalk.ColorRef) 8 4278190080 0 39 0 0 0 416 788230 ##(Smalltalk.BorderLayout) 1 1 0 0 0 410 8 ##(Smalltalk.ContainerView) 98 15 0 416 98 2 8 1140850688 131073 560 0 0 0 7 0 0 0 560 1180166 ##(Smalltalk.ProportionalLayout) 234 240 98 0 32 234 256 688 0 983302 ##(Smalltalk.MessageSequence) 202 208 98 1 721670 ##(Smalltalk.MessageSend) 8 #createAt:extent: 98 2 328198 ##(Smalltalk.Point) 1 1 850 321 723 560 983302 ##(Smalltalk.WINDOWPLACEMENT) 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 160 0 0 0 105 1 0 0] 98 1 410 8 ##(Smalltalk.ListBox) 98 17 0 560 98 2 8 1412497665 1025 960 590662 2 ##(Smalltalk.ListModel) 202 208 688 0 1310726 ##(Smalltalk.IdentitySearchPolicy) 482 8 4278190080 0 7 0 0 0 960 0 8 4294904461 459270 ##(Smalltalk.Message) 8 #displayString 98 0 688 32 722 202 208 98 2 786 816 98 2 850 1 1 850 321 723 960 786 8 #horizontalExtent: 98 1 1 960 898 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 160 0 0 0 105 1 0 0] 98 0 850 193 193 0 27 1440 0 27 410 576 98 15 0 416 98 2 8 1140850688 131073 1456 0 0 0 7 0 0 0 1456 530 1 1 0 410 576 98 15 0 1456 98 2 8 1140850688 131073 1536 0 0 0 7 0 0 0 1536 642 234 240 688 32 234 256 688 0 722 202 208 98 1 786 816 98 2 850 1 633 850 519 91 1536 898 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 60 1 0 0 3 1 0 0 105 1 0 0] 98 1 410 8 ##(Smalltalk.PushButton) 98 20 0 1536 98 2 8 1140924416 1 1808 0 0 0 7 0 0 0 1808 0 8 4294904113 1180998 4 ##(Smalltalk.CommandDescription) 8 #borrarMateria 8 'Borrar' 1 1 0 0 16 0 0 0 722 202 208 98 3 786 816 98 2 850 1 1 850 519 91 1808 786 8 #isEnabled: 98 1 32 1808 786 8 #text: 98 1 8 'Borrar' 1808 898 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 3 1 0 0 45 0 0 0] 98 0 1440 0 29 1440 0 27 0 0 410 576 98 15 0 1456 98 2 8 1140850688 131073 2240 0 0 0 7 0 0 0 2240 642 234 240 688 16 234 256 688 0 722 202 208 98 1 786 816 98 2 850 1 1 850 519 633 2240 898 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 3 1 0 0 60 1 0 0] 98 4 410 576 98 15 0 2240 98 2 8 1140850688 131073 2512 0 0 0 7 0 0 0 2512 642 234 240 688 32 234 256 98 2 410 8 ##(Smalltalk.StaticText) 98 16 0 2512 98 2 8 1140850945 65 2640 0 0 0 7 0 263174 ##(Smalltalk.Font) 0 16 459014 ##(Smalltalk.LOGFONT) 8 #[240 255 255 255 0 0 0 0 0 0 0 0 0 0 0 0 188 2 0 0 0 0 0 0 1 2 1 34 83 121 115 116 101 109 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] 850 193 193 0 2640 0 8 4294904093 852486 ##(Smalltalk.NullConverter) 0 0 0 722 202 208 98 2 786 816 98 2 850 269 41 850 251 79 2640 786 2144 98 1 8 'nombre' 2640 898 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 134 0 0 0 20 0 0 0 3 1 0 0 59 0 0 0] 98 0 1440 0 27 8 'labelNombreMateria' 590342 ##(Smalltalk.Rectangle) 850 21 41 850 1 41 722 202 208 98 1 786 816 98 2 850 1 1 850 519 159 2512 898 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 3 1 0 0 79 0 0 0] 98 2 410 2656 98 16 0 2512 98 2 8 1140850944 65 3312 0 0 0 7 0 2722 0 16 2754 8 #[240 255 255 255 0 0 0 0 0 0 0 0 0 0 0 0 188 2 0 0 0 0 0 0 1 2 1 34 83 121 115 116 101 109 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] 850 193 193 0 3312 0 8 4294904093 2834 0 0 0 722 202 208 98 2 786 816 98 2 850 21 41 850 249 79 3312 786 2144 98 1 8 'Nombre de la materia:' 3312 898 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 10 0 0 0 20 0 0 0 134 0 0 0 59 0 0 0] 98 0 1440 0 27 2640 1440 0 27 410 576 98 15 0 2240 98 2 8 1140850688 131073 3680 0 0 0 7 0 0 0 3680 642 234 240 688 32 234 256 98 2 410 2656 98 16 0 3680 98 2 8 1140850945 65 3808 0 0 0 7 0 2722 0 16 2754 8 #[240 255 255 255 0 0 0 0 0 0 0 0 0 0 0 0 188 2 0 0 0 0 0 0 1 2 1 34 83 121 115 116 101 109 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] 850 193 193 0 3808 0 8 4294904093 2834 0 0 0 722 202 208 98 2 786 816 98 2 850 269 41 850 251 119 3808 786 2144 98 1 8 'dificultad' 3808 898 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 134 0 0 0 20 0 0 0 3 1 0 0 79 0 0 0] 98 0 1440 0 27 8 'labelDificultad' 3090 850 21 41 850 1 1 722 202 208 98 1 786 816 98 2 850 1 159 850 519 159 3680 898 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 79 0 0 0 3 1 0 0 158 0 0 0] 98 2 410 2656 98 16 0 3680 98 2 8 1140850944 65 4400 0 0 0 7 0 2722 0 16 2754 8 #[240 255 255 255 0 0 0 0 0 0 0 0 0 0 0 0 188 2 0 0 0 0 0 0 1 2 1 34 83 121 115 116 101 109 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] 850 193 193 0 4400 0 8 4294904093 2834 0 0 0 722 202 208 98 2 786 816 98 2 850 21 41 850 249 119 4400 786 2144 98 1 8 'Dificultad:' 4400 898 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 10 0 0 0 20 0 0 0 134 0 0 0 79 0 0 0] 98 0 1440 0 27 3808 1440 0 27 410 576 98 15 0 2240 98 2 8 1140850688 131073 4768 0 0 0 7 0 0 0 4768 642 234 240 688 32 234 256 98 2 410 2656 98 16 0 4768 98 2 8 1140850945 65 4896 0 0 0 7 0 0 0 4896 0 8 4294904093 2834 0 0 0 722 202 208 98 2 786 816 98 2 850 269 41 850 251 79 4896 786 2144 98 1 8 'SioNo' 4896 898 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 134 0 0 0 20 0 0 0 3 1 0 0 59 0 0 0] 98 0 1440 0 27 8 'labelTieneFinal' 3090 850 21 41 850 1 41 722 202 208 98 1 786 816 98 2 850 1 317 850 519 159 4768 898 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 158 0 0 0 3 1 0 0 237 0 0 0] 98 2 410 2656 98 16 0 4768 98 2 8 1140850944 65 5424 0 0 0 7 0 2722 0 16 2754 8 #[240 255 255 255 0 0 0 0 0 0 0 0 0 0 0 0 188 2 0 0 0 0 0 0 1 2 1 34 83 121 115 116 101 109 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] 850 193 193 0 5424 0 8 4294904093 2834 0 0 0 722 202 208 98 2 786 816 98 2 850 21 41 850 249 79 5424 786 2144 98 1 8 'Tiene Final?' 5424 898 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 10 0 0 0 20 0 0 0 134 0 0 0 59 0 0 0] 98 0 1440 0 27 4896 1440 0 27 410 576 98 15 0 2240 98 2 8 1140850688 131073 5792 0 0 0 7 0 0 0 5792 642 234 240 688 32 234 256 98 2 410 2656 98 16 0 5792 98 2 8 1140850945 65 5920 0 0 0 7 0 0 0 5920 0 8 4294904093 2834 0 0 0 722 202 208 98 2 786 816 98 2 850 269 41 850 251 119 5920 786 2144 98 1 8 'unDia' 5920 898 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 134 0 0 0 20 0 0 0 3 1 0 0 79 0 0 0] 98 0 1440 0 27 8 'labelDiaSemana' 3090 850 21 41 850 1 1 722 202 208 98 1 786 816 98 2 850 1 475 850 519 159 5792 898 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 237 0 0 0 3 1 0 0 60 1 0 0] 98 2 410 2656 98 16 0 5792 98 2 8 1140850944 65 6448 0 0 0 7 0 2722 0 16 2754 8 #[240 255 255 255 0 0 0 0 0 0 0 0 0 0 0 0 188 2 0 0 0 0 0 0 1 2 1 34 83 121 115 116 101 109 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] 850 193 193 0 6448 0 8 4294904093 2834 0 0 0 722 202 208 98 2 786 816 98 2 850 21 41 850 249 119 6448 786 2144 98 1 8 'Día de la semana:' 6448 898 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 10 0 0 0 20 0 0 0 134 0 0 0 79 0 0 0] 98 0 1440 0 27 5920 1440 0 27 1440 0 27 234 256 688 0 722 202 208 98 1 786 816 98 2 850 321 1 850 519 723 1456 898 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 160 0 0 0 0 0 0 0 163 1 0 0 105 1 0 0] 98 2 2240 1536 1440 0 27 234 256 688 0 0 0 0 0 10491 0 0 0 0 1 0 0 722 202 208 98 2 786 816 98 2 850 2719 21 850 871 801 416 786 8 #updateMenuBar 688 416 898 8 #[44 0 0 0 0 0 0 0 0 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 79 5 0 0 10 0 0 0 2 7 0 0 154 1 0 0] 98 2 560 1456 1440 0 27 )! !
+	^#(#'!!STL' 3 788558 10 ##(Smalltalk.STBViewProxy) 8 ##(Smalltalk.ShellView) 98 27 0 0 98 2 26214401 131073 416 0 524550 ##(Smalltalk.ColorRef) 8 4278190080 0 39 0 0 0 416 788230 ##(Smalltalk.BorderLayout) 1 1 0 0 0 410 8 ##(Smalltalk.ContainerView) 98 15 0 416 98 2 8 1140850688 131073 560 0 0 0 7 0 0 0 560 1180166 ##(Smalltalk.ProportionalLayout) 234 240 98 0 32 234 256 98 2 410 8 ##(Smalltalk.ListBox) 98 17 0 560 98 2 8 1412497665 1025 736 590662 2 ##(Smalltalk.ListModel) 202 208 688 0 1310726 ##(Smalltalk.IdentitySearchPolicy) 482 8 4278190080 0 7 0 0 0 736 0 8 4294902979 459270 ##(Smalltalk.Message) 8 #displayString 98 0 688 32 983302 ##(Smalltalk.MessageSequence) 202 208 98 2 721670 ##(Smalltalk.MessageSend) 8 #createAt:extent: 98 2 328198 ##(Smalltalk.Point) 1 1 1138 321 723 736 1074 8 #horizontalExtent: 98 1 1 736 983302 ##(Smalltalk.WINDOWPLACEMENT) 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 160 0 0 0 105 1 0 0] 98 0 1138 193 193 0 27 8 'boxListaMaterias' 0 1010 202 208 98 1 1074 1104 98 2 1138 1 1 1138 321 723 560 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 160 0 0 0 105 1 0 0] 98 1 736 1296 0 27 410 576 98 15 0 416 98 2 8 1140850688 131073 1488 0 0 0 7 0 0 0 1488 530 1 1 0 410 576 98 15 0 1488 98 2 8 1140850688 131073 1568 0 0 0 7 0 0 0 1568 642 234 240 688 32 234 256 688 0 1010 202 208 98 1 1074 1104 98 2 1138 1 633 1138 519 91 1568 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 60 1 0 0 3 1 0 0 105 1 0 0] 98 1 410 8 ##(Smalltalk.PushButton) 98 20 0 1568 98 2 8 1140924416 1 1840 0 0 0 7 0 0 0 1840 0 8 4294902235 1180998 4 ##(Smalltalk.CommandDescription) 8 #borrarMateria 8 'Borrar' 1 1 0 0 16 0 0 0 1010 202 208 98 3 1074 1104 98 2 1138 1 1 1138 519 91 1840 1074 8 #isEnabled: 98 1 32 1840 1074 8 #text: 98 1 8 'Borrar' 1840 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 3 1 0 0 45 0 0 0] 98 0 1296 0 29 1296 0 27 0 0 410 576 98 15 0 1488 98 2 8 1140850688 131073 2272 0 0 0 7 0 0 0 2272 642 234 240 688 16 234 256 688 0 1010 202 208 98 1 1074 1104 98 2 1138 1 1 1138 519 633 2272 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 3 1 0 0 60 1 0 0] 98 4 410 576 98 15 0 2272 98 2 8 1140850688 131073 2544 0 0 0 7 0 0 0 2544 642 234 240 688 32 234 256 98 2 410 8 ##(Smalltalk.StaticText) 98 16 0 2544 98 2 8 1140850945 65 2672 0 0 0 7 0 263174 ##(Smalltalk.Font) 0 16 459014 ##(Smalltalk.LOGFONT) 8 #[240 255 255 255 0 0 0 0 0 0 0 0 0 0 0 0 188 2 0 0 0 0 0 0 1 2 1 34 83 121 115 116 101 109 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] 1138 193 193 0 2672 0 8 4294902015 852486 ##(Smalltalk.NullConverter) 0 0 0 1010 202 208 98 2 1074 1104 98 2 1138 269 41 1138 251 79 2672 1074 2176 98 1 8 'nombre' 2672 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 134 0 0 0 20 0 0 0 3 1 0 0 59 0 0 0] 98 0 1296 0 27 8 'labelNombreMateria' 590342 ##(Smalltalk.Rectangle) 1138 21 41 1138 1 41 1010 202 208 98 1 1074 1104 98 2 1138 1 1 1138 519 159 2544 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 3 1 0 0 79 0 0 0] 98 2 410 2688 98 16 0 2544 98 2 8 1140850944 65 3344 0 0 0 7 0 2754 0 16 2786 8 #[240 255 255 255 0 0 0 0 0 0 0 0 0 0 0 0 188 2 0 0 0 0 0 0 1 2 1 34 83 121 115 116 101 109 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] 1138 193 193 0 3344 0 8 4294902015 2866 0 0 0 1010 202 208 98 2 1074 1104 98 2 1138 21 41 1138 249 79 3344 1074 2176 98 1 8 'Nombre de la materia:' 3344 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 10 0 0 0 20 0 0 0 134 0 0 0 59 0 0 0] 98 0 1296 0 27 2672 1296 0 27 410 576 98 15 0 2272 98 2 8 1140850688 131073 3712 0 0 0 7 0 0 0 3712 642 234 240 688 32 234 256 98 2 410 2688 98 16 0 3712 98 2 8 1140850945 65 3840 0 0 0 7 0 2754 0 16 2786 8 #[240 255 255 255 0 0 0 0 0 0 0 0 0 0 0 0 188 2 0 0 0 0 0 0 1 2 1 34 83 121 115 116 101 109 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] 1138 193 193 0 3840 0 8 4294902015 2866 0 0 0 1010 202 208 98 2 1074 1104 98 2 1138 269 41 1138 251 119 3840 1074 2176 98 1 8 'dificultad' 3840 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 134 0 0 0 20 0 0 0 3 1 0 0 79 0 0 0] 98 0 1296 0 27 8 'labelDificultad' 3122 1138 21 41 1138 1 1 1010 202 208 98 1 1074 1104 98 2 1138 1 159 1138 519 159 3712 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 79 0 0 0 3 1 0 0 158 0 0 0] 98 2 410 2688 98 16 0 3712 98 2 8 1140850944 65 4432 0 0 0 7 0 2754 0 16 2786 8 #[240 255 255 255 0 0 0 0 0 0 0 0 0 0 0 0 188 2 0 0 0 0 0 0 1 2 1 34 83 121 115 116 101 109 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] 1138 193 193 0 4432 0 8 4294902015 2866 0 0 0 1010 202 208 98 2 1074 1104 98 2 1138 21 41 1138 249 119 4432 1074 2176 98 1 8 'Dificultad:' 4432 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 10 0 0 0 20 0 0 0 134 0 0 0 79 0 0 0] 98 0 1296 0 27 3840 1296 0 27 410 576 98 15 0 2272 98 2 8 1140850688 131073 4800 0 0 0 7 0 0 0 4800 642 234 240 688 32 234 256 98 2 410 2688 98 16 0 4800 98 2 8 1140850945 65 4928 0 0 0 7 0 0 0 4928 0 8 4294902015 2866 0 0 0 1010 202 208 98 2 1074 1104 98 2 1138 269 41 1138 251 79 4928 1074 2176 98 1 8 'SioNo' 4928 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 134 0 0 0 20 0 0 0 3 1 0 0 59 0 0 0] 98 0 1296 0 27 8 'labelTieneFinal' 3122 1138 21 41 1138 1 41 1010 202 208 98 1 1074 1104 98 2 1138 1 317 1138 519 159 4800 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 158 0 0 0 3 1 0 0 237 0 0 0] 98 2 410 2688 98 16 0 4800 98 2 8 1140850944 65 5456 0 0 0 7 0 2754 0 16 2786 8 #[240 255 255 255 0 0 0 0 0 0 0 0 0 0 0 0 188 2 0 0 0 0 0 0 1 2 1 34 83 121 115 116 101 109 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] 1138 193 193 0 5456 0 8 4294902015 2866 0 0 0 1010 202 208 98 2 1074 1104 98 2 1138 21 41 1138 249 79 5456 1074 2176 98 1 8 'Tiene Final?' 5456 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 10 0 0 0 20 0 0 0 134 0 0 0 59 0 0 0] 98 0 1296 0 27 4928 1296 0 27 410 576 98 15 0 2272 98 2 8 1140850688 131073 5824 0 0 0 7 0 0 0 5824 642 234 240 688 32 234 256 98 2 410 2688 98 16 0 5824 98 2 8 1140850945 65 5952 0 0 0 7 0 0 0 5952 0 8 4294902015 2866 0 0 0 1010 202 208 98 2 1074 1104 98 2 1138 269 41 1138 251 119 5952 1074 2176 98 1 8 'unDia' 5952 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 134 0 0 0 20 0 0 0 3 1 0 0 79 0 0 0] 98 0 1296 0 27 8 'labelDiaSemana' 3122 1138 21 41 1138 1 1 1010 202 208 98 1 1074 1104 98 2 1138 1 475 1138 519 159 5824 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 237 0 0 0 3 1 0 0 60 1 0 0] 98 2 410 2688 98 16 0 5824 98 2 8 1140850944 65 6480 0 0 0 7 0 2754 0 16 2786 8 #[240 255 255 255 0 0 0 0 0 0 0 0 0 0 0 0 188 2 0 0 0 0 0 0 1 2 1 34 83 121 115 116 101 109 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] 1138 193 193 0 6480 0 8 4294902015 2866 0 0 0 1010 202 208 98 2 1074 1104 98 2 1138 21 41 1138 249 119 6480 1074 2176 98 1 8 'Día de la semana:' 6480 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 10 0 0 0 20 0 0 0 134 0 0 0 79 0 0 0] 98 0 1296 0 27 5952 1296 0 27 1296 0 27 234 256 688 0 1010 202 208 98 1 1074 1104 98 2 1138 321 1 1138 519 723 1488 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 160 0 0 0 0 0 0 0 163 1 0 0 105 1 0 0] 98 2 2272 1568 1296 0 27 234 256 688 0 0 0 0 0 14353 0 0 0 0 1 0 0 1010 202 208 98 2 1074 1104 98 2 1138 2719 21 1138 871 801 416 1074 8 #updateMenuBar 688 416 1234 8 #[44 0 0 0 0 0 0 0 0 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 79 5 0 0 10 0 0 0 2 7 0 0 154 1 0 0] 98 2 560 1488 1296 0 27 )! !
 !ShellPoblacionActualPresenter class categoriesFor: #resource_Default_view!public!resources-views! !
 
 ShellAg guid: (GUID fromString: '{2B06A607-E056-4008-80AF-6695E0AC7FF9}')!

@@ -28,8 +28,8 @@ package globalAliases: (Set new
 	yourself).
 
 package setPrerequisites: (IdentitySet new
-	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
-	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Contributions\ITC Gorisek\OmniBase';
+	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
+	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Contributions\ITC Gorisek\OmniBase';
 	yourself).
 
 package!
@@ -77,7 +77,7 @@ Model subclass: #CruzamientoStrategy
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
 Model subclass: #Gen
-	instanceVariableNames: 'nombre posicion'
+	instanceVariableNames: 'nombre dificultad dia final posicion'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -133,6 +133,9 @@ aptitud
 aptitud: anObject
 	aptitud := anObject!
 
+buscarGen: unGen
+^poblacionMundial detect: [:each | (self convertir_a_decimal: each posicion) =  (self convertir_a_decimal: unGen posicion) ]!
+
 cargarPoblacion
 	| fileIn byteArray |
 	fileIn := FileStream read: 'poblacion'.
@@ -161,11 +164,24 @@ cruzamiento
 cruzamiento: anObject
 	cruzamiento := anObject!
 
+existeGen: unGen
+^poblacionMundial anySatisfy: [:each | (self convertir_a_decimal: each posicion) =  (self convertir_a_decimal: unGen posicion) ]!
+
 guardarPoblacion
-|fileOut|
-fileOut :=FileStream write: 'poblacion'.
-fileOut nextPutAll:  (ODBSerializer serializeToBytes: self poblacionMundial).
-fileOut flush; close.!
+	| fileOut |
+	(File exists: 'poblacion')
+		ifTrue: 
+			[fileOut := FileStream write: 'poblacion'.
+			fileOut nextPutAll: (ODBSerializer serializeToBytes: self poblacionMundial).
+			fileOut
+				flush;
+				close]
+		ifFalse: 
+			[fileOut := FileStream write: 'poblacion'.
+			fileOut nextPutAll: (ODBSerializer serializeToBytes: self poblacionMundial).
+			fileOut
+				flush;
+				close]!
 
 initialize
 	self aptitud: Aptitud new.
@@ -204,11 +220,13 @@ seleccion: anObject
 !Ag categoriesFor: #agregarGen:!public! !
 !Ag categoriesFor: #aptitud!accessing!public! !
 !Ag categoriesFor: #aptitud:!accessing!public! !
+!Ag categoriesFor: #buscarGen:!public! !
 !Ag categoriesFor: #cargarPoblacion!public! !
 !Ag categoriesFor: #convertir_a_decimal:!public! !
 !Ag categoriesFor: #crearGen:!public! !
 !Ag categoriesFor: #cruzamiento!accessing!public! !
 !Ag categoriesFor: #cruzamiento:!accessing!public! !
+!Ag categoriesFor: #existeGen:!public! !
 !Ag categoriesFor: #guardarPoblacion!public! !
 !Ag categoriesFor: #initialize!public! !
 !Ag categoriesFor: #mutacion!accessing!public! !
@@ -444,19 +462,40 @@ Gen comment: 'Esta Clase se usa para definir cada gen que compondran los cromoso
 !Gen categoriesForClass!Unclassified! !
 !Gen methodsFor!
 
-diaSemana: unArray
+dia
+	^dia!
+
+dia: anObject
+	dia := anObject!
+
+diaSemana: unArray tipo: unTipo
 	self posicion at:4 put: (unArray at: 1).
 	self posicion at:5 put: (unArray at: 2).
-	self posicion at:6 put: (unArray at: 3).!
+	self posicion at:6 put: (unArray at: 3).
+	self dia: unTipo!
 
-dificultad:unArray
+dificultad
+	^dificultad!
+
+dificultad: anObject
+	dificultad := anObject!
+
+dificultad:unArray tipo: unTipo
 	self posicion at:2 put: (unArray at: 1).
 	self posicion at:3 put: (unArray at: 2).
+	self dificultad: unTipo.
 	!
 
-nombre
-	"Answer the value of the receiver's 'nombre' instance variable."
+displayString
+	^self nombre!
 
+final
+	^final!
+
+final: anObject
+	final := anObject!
+
+nombre
 	^nombre!
 
 nombre: anObject
@@ -474,11 +513,23 @@ posicion: anObject
 
 	posicion := anObject!
 
-tieneFinal:aBoolean
-	aBoolean ifTrue: [self posicion at:1 put:0].! !
-!Gen categoriesFor: #diaSemana:!public! !
-!Gen categoriesFor: #dificultad:!public! !
-!Gen categoriesFor: #nombre!accessing!public! !
+tieneFinal: aBoolean
+	aBoolean
+		ifTrue: 
+			[self posicion at: 1 put: 0.
+			self final: 'si']
+		ifFalse:[self posicion at: 1 put: 1.
+			self final: 'no']! !
+!Gen categoriesFor: #dia!accessing!public! !
+!Gen categoriesFor: #dia:!accessing!public! !
+!Gen categoriesFor: #diaSemana:tipo:!public! !
+!Gen categoriesFor: #dificultad!accessing!public! !
+!Gen categoriesFor: #dificultad:!accessing!public! !
+!Gen categoriesFor: #dificultad:tipo:!public! !
+!Gen categoriesFor: #displayString!public! !
+!Gen categoriesFor: #final!accessing!public! !
+!Gen categoriesFor: #final:!accessing!public! !
+!Gen categoriesFor: #nombre!public! !
 !Gen categoriesFor: #nombre:!accessing!public! !
 !Gen categoriesFor: #posicion!accessing!public! !
 !Gen categoriesFor: #posicion:!accessing!public! !
@@ -490,8 +541,12 @@ new: unArray
 	|gen|
 	gen:= self new.
 	gen posicion: unArray.
-	^gen! !
+	^gen!
+
+nombre
+^self nombre! !
 !Gen class categoriesFor: #new:!public! !
+!Gen class categoriesFor: #nombre!public! !
 
 MutacionEstrategy guid: (GUID fromString: '{0EDDE7A8-F69A-495C-8B62-ACB0B6E8A9E2}')!
 MutacionEstrategy comment: ''!
