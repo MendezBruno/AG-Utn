@@ -18,7 +18,7 @@ package globalAliases: (Set new
 
 package setPrerequisites: (IdentitySet new
 	add: 'ag';
-	add: '..\..\Documents\Dolphin Smalltalk 7\Core\Contributions\Camp Smalltalk\SUnit\SUnit';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Contributions\Camp Smalltalk\SUnit\SUnit';
 	yourself).
 
 package!
@@ -58,11 +58,11 @@ GenTests comment: ''!
 !GenTests methodsFor!
 
 setUp
-	gen:= Gen new:5!
+	gen := Caracteristica new: 5!
 
 testNew
 	| genAux |
-	genAux := Gen new: 7.
+	genAux := Caracteristica new: 7.
 	self assert: genAux posicion size = 7! !
 !GenTests categoriesFor: #setUp!public! !
 !GenTests categoriesFor: #testNew!public! !
@@ -75,16 +75,16 @@ PoblacionTest comment: ''!
 setUp
 	| cromosoma1 cromosoma2 |
 	poblacion := Poblacion new.
-	cromosoma1 := Cromosoma new.
-	cromosoma1 genes add: (Gen new: #(1 0 1 0 0 1)).
-	cromosoma1 genes add: (Gen new: #(1 1 0 0 1 0)).
-	cromosoma1 genes add: (Gen new: #(0 1 1 0 1 1)).
-	cromosoma2 := Cromosoma new.
-	cromosoma2 genes add: (Gen new: #(1 0 0 1 0 0)).
-	cromosoma2 genes add: (Gen new: #(0 0 1 0 1 1)).
-	cromosoma2 genes add: (Gen new: #(1 0 1 1 1 1)).
+	cromosoma1 := Gen new.
+	cromosoma1 carateristicas add: (Caracteristica new: #(1 0 1 0 0 1)).
+	cromosoma1 carateristicas add: (Caracteristica new: #(1 1 0 0 1 0)).
+	cromosoma1 carateristicas add: (Caracteristica new: #(0 1 1 0 1 1)).
+	cromosoma2 := Gen new.
+	cromosoma2 carateristicas add: (Caracteristica new: #(1 0 0 1 0 0)).
+	cromosoma2 carateristicas add: (Caracteristica new: #(0 0 1 0 1 1)).
+	cromosoma2 carateristicas add: (Caracteristica new: #(1 0 1 1 1 1)).
 	poblacion cromosomas add: cromosoma1.
-	poblacion cromosomas add: cromosoma2.! !
+	poblacion cromosomas add: cromosoma2! !
 !PoblacionTest categoriesFor: #setUp!public! !
 
 TestAptitud guid: (GUID fromString: '{8C0F7198-AFBB-4106-BFD2-9BC3922A91A9}')!
@@ -95,16 +95,16 @@ TestAptitud comment: ''!
 setUp
 	| cromosoma1 cromosoma2 |
 	poblacion := Poblacion new.
-	cromosoma1 := Cromosoma new.
-	cromosoma1 genes add: (Gen new: #(1 0 1 0 0 1)).
-	cromosoma1 genes add: (Gen new: #(1 1 0 0 1 0)).
-	cromosoma1 genes add: (Gen new: #(0 1 1 0 1 1)).
-	cromosoma2 := Cromosoma new.
-	cromosoma2 genes add: (Gen new: #(1 0 0 1 0 0)).
-	cromosoma2 genes add: (Gen new: #(0 0 1 0 1 1)).
-	cromosoma2 genes add: (Gen new: #(1 0 1 1 1 1)).
+	cromosoma1 := Gen new.
+	cromosoma1 carateristicas add: (Caracteristica new: #(1 0 1 0 0 1)).
+	cromosoma1 carateristicas add: (Caracteristica new: #(1 1 0 0 1 0)).
+	cromosoma1 carateristicas add: (Caracteristica new: #(0 1 1 0 1 1)).
+	cromosoma2 := Gen new.
+	cromosoma2 carateristicas add: (Caracteristica new: #(1 0 0 1 0 0)).
+	cromosoma2 carateristicas add: (Caracteristica new: #(0 0 1 0 1 1)).
+	cromosoma2 carateristicas add: (Caracteristica new: #(1 0 1 1 1 1)).
 	poblacion cromosomas add: cromosoma1.
-	poblacion cromosomas add: cromosoma2.!
+	poblacion cromosomas add: cromosoma2!
 
 testAptitud
 	| aptitud |

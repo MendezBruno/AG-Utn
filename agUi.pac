@@ -20,13 +20,13 @@ package globalAliases: (Set new
 	yourself).
 
 package setPrerequisites: (IdentitySet new
-	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
-	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Models\List\Dolphin List Models';
-	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Presenters\List\Dolphin List Presenter';
-	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Base\Dolphin MVP Base';
-	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Presenters\Text\Dolphin Text Presenter';
-	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Type Converters\Dolphin Type Converters';
-	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Models\Value\Dolphin Value Models';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Models\List\Dolphin List Models';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Presenters\List\Dolphin List Presenter';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Base\Dolphin MVP Base';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Presenters\Text\Dolphin Text Presenter';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Type Converters\Dolphin Type Converters';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Models\Value\Dolphin Value Models';
 	yourself).
 
 package!
@@ -39,7 +39,7 @@ Shell subclass: #ShellAgPresenter
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
 Shell subclass: #ShellCargarPoblacionPresenter
-	instanceVariableNames: ''
+	instanceVariableNames: 'ctrlNombreMateria ctrlCheckBoxFinal ctrlComboBoxDificultad ctrlComboBoxDiaSemana'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -78,6 +78,12 @@ ShellView subclass: #ShellViewPoblacionActual
 ShellAgPresenter guid: (GUID fromString: '{14950F2D-C825-4003-9B6D-216844DCC40F}')!
 ShellAgPresenter comment: ''!
 !ShellAgPresenter categoriesForClass!MVP-Presenters! !
+!ShellAgPresenter methodsFor!
+
+cargarPoblacionShell
+	ShellCargarPoblacionPresenter showOn: self model.! !
+!ShellAgPresenter categoriesFor: #cargarPoblacionShell!public! !
+
 !ShellAgPresenter class methodsFor!
 
 resource_Default_view
@@ -94,6 +100,58 @@ resource_Default_view
 ShellCargarPoblacionPresenter guid: (GUID fromString: '{D9432469-4DE6-4C08-9897-4AACBA58656E}')!
 ShellCargarPoblacionPresenter comment: ''!
 !ShellCargarPoblacionPresenter categoriesForClass!MVP-Presenters! !
+!ShellCargarPoblacionPresenter methodsFor!
+
+createComponents
+	super createComponents.
+	ctrlNombreMateria := self add: TextPresenter new name: 'textBoxNombreMateria'.
+	ctrlCheckBoxFinal:= self add: CheckBox new name: 'checkBoxFinal'.
+	ctrlComboBoxDificultad:= self add: ComboBox new name: 'comboBoxDificultad'.
+	ctrlComboBoxDiaSemana:= self add: ComboBox new name: 'comboBoxDiaSemana'.!
+
+ctrlCheckBoxFinal
+	^ctrlCheckBoxFinal!
+
+ctrlCheckBoxFinal: anObject
+	ctrlCheckBoxFinal := anObject!
+
+ctrlComboBoxDiaSemana
+	^ctrlComboBoxDiaSemana!
+
+ctrlComboBoxDiaSemana: anObject
+	ctrlComboBoxDiaSemana := anObject!
+
+ctrlComboBoxDificultad
+	^ctrlComboBoxDificultad!
+
+ctrlComboBoxDificultad: anObject
+	ctrlComboBoxDificultad := anObject!
+
+ctrlNombreMateria
+	^ctrlNombreMateria!
+
+ctrlNombreMateria: anObject
+	ctrlNombreMateria := anObject!
+
+guardarMateria
+
+|auxGen|
+self halt.
+	auxGen:= (self model crearGen: ctrlNombreMateria value).
+	auxGen tieneFinal: ctrlCheckBoxFinal value.
+	auxGen dificultad: ctrlComboBoxDificultad value.
+	auxGen diaSemana: ctrlComboBoxDiaSemana value.! !
+!ShellCargarPoblacionPresenter categoriesFor: #createComponents!public! !
+!ShellCargarPoblacionPresenter categoriesFor: #ctrlCheckBoxFinal!accessing!private! !
+!ShellCargarPoblacionPresenter categoriesFor: #ctrlCheckBoxFinal:!accessing!private! !
+!ShellCargarPoblacionPresenter categoriesFor: #ctrlComboBoxDiaSemana!accessing!private! !
+!ShellCargarPoblacionPresenter categoriesFor: #ctrlComboBoxDiaSemana:!accessing!private! !
+!ShellCargarPoblacionPresenter categoriesFor: #ctrlComboBoxDificultad!accessing!private! !
+!ShellCargarPoblacionPresenter categoriesFor: #ctrlComboBoxDificultad:!accessing!private! !
+!ShellCargarPoblacionPresenter categoriesFor: #ctrlNombreMateria!accessing!private! !
+!ShellCargarPoblacionPresenter categoriesFor: #ctrlNombreMateria:!accessing!private! !
+!ShellCargarPoblacionPresenter categoriesFor: #guardarMateria!public! !
+
 !ShellCargarPoblacionPresenter class methodsFor!
 
 resource_Default_view

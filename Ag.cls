@@ -1,7 +1,7 @@
 "Filed out from Dolphin Smalltalk 7"!
 
 Model subclass: #Ag
-	instanceVariableNames: 'poblacionInicial poblacionSeleccionada poblacionMundial mutacion cruzamiento seleccion aptitud'
+	instanceVariableNames: 'poblacionInicial poblacion_seleccionada poblacionMundial mutacion cruzamiento seleccion aptitud'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -17,10 +17,10 @@ aptitud: anObject
 	aptitud := anObject!
 
 cargarPoblacion
-|fileIn byteArray|
-fileIn:= FileStream read: 'C:\Users\bruno\prueba3' . 
-byteArray:= fileIn collection asByteArray.
-poblacionMundial := ODBDeserializer deserializeFromBytes:byteArray.!
+	| fileIn byteArray |
+	fileIn := FileStream read: 'poblacion'.
+	byteArray := fileIn collection asByteArray.
+	poblacionMundial := ODBDeserializer deserializeFromBytes: byteArray!
 
 convertir_a_decimal: unArray
 	| iteracion acum |
@@ -31,6 +31,12 @@ convertir_a_decimal: unArray
 			unValor = 1 ifTrue: [acum := acum + (2 ** iteracion)].
 			iteracion := iteracion + 1].
 	^acum!
+
+crearGen: unNombre
+	| gen |
+	gen := Gen new.
+	gen nombre: unNombre.
+	^gen!
 
 cruzamiento
 	^cruzamiento!
@@ -44,11 +50,21 @@ fileOut :=FileStream write: 'poblacion'.
 fileOut nextPutAll:  (ODBSerializer serializeToBytes: self poblacionMundial).
 fileOut flush; close.!
 
+initialize
+	self aptitud: Aptitud new.
+	self seleccion: Torneo new.!
+
 mutacion
 	^mutacion!
 
 mutacion: anObject
 	mutacion := anObject!
+
+poblacion_seleccionada
+	^poblacion_seleccionada!
+
+poblacion_seleccionada: anObject
+	poblacion_seleccionada := anObject!
 
 poblacionInicial
 	^poblacionInicial!
@@ -62,32 +78,35 @@ poblacionMundial
 poblacionMundial: anObject
 	poblacionMundial := anObject!
 
-poblacionSeleccionada
-	^poblacionSeleccionada!
-
-poblacionSeleccionada: anObject
-	poblacionSeleccionada := anObject!
-
 seleccion
 	^seleccion!
 
 seleccion: anObject
 	seleccion := anObject! !
-!Ag categoriesFor: #aptitud!accessing!private! !
-!Ag categoriesFor: #aptitud:!accessing!private! !
+!Ag categoriesFor: #aptitud!accessing!public! !
+!Ag categoriesFor: #aptitud:!accessing!public! !
 !Ag categoriesFor: #cargarPoblacion!public! !
 !Ag categoriesFor: #convertir_a_decimal:!public! !
-!Ag categoriesFor: #cruzamiento!accessing!private! !
-!Ag categoriesFor: #cruzamiento:!accessing!private! !
+!Ag categoriesFor: #crearGen:!public! !
+!Ag categoriesFor: #cruzamiento!accessing!public! !
+!Ag categoriesFor: #cruzamiento:!accessing!public! !
 !Ag categoriesFor: #guardarPoblacion!public! !
-!Ag categoriesFor: #mutacion!accessing!private! !
-!Ag categoriesFor: #mutacion:!accessing!private! !
-!Ag categoriesFor: #poblacionInicial!accessing!private! !
-!Ag categoriesFor: #poblacionInicial:!accessing!private! !
+!Ag categoriesFor: #initialize!public! !
+!Ag categoriesFor: #mutacion!accessing!public! !
+!Ag categoriesFor: #mutacion:!accessing!public! !
+!Ag categoriesFor: #poblacion_seleccionada!accessing!public! !
+!Ag categoriesFor: #poblacion_seleccionada:!accessing!public! !
+!Ag categoriesFor: #poblacionInicial!accessing!public! !
+!Ag categoriesFor: #poblacionInicial:!accessing!public! !
 !Ag categoriesFor: #poblacionMundial!accessing!private! !
 !Ag categoriesFor: #poblacionMundial:!accessing!private! !
-!Ag categoriesFor: #poblacionSeleccionada!accessing!private! !
-!Ag categoriesFor: #poblacionSeleccionada:!accessing!private! !
-!Ag categoriesFor: #seleccion!accessing!private! !
-!Ag categoriesFor: #seleccion:!accessing!private! !
+!Ag categoriesFor: #seleccion!accessing!public! !
+!Ag categoriesFor: #seleccion:!accessing!public! !
+
+!Ag class methodsFor!
+
+new
+	^super new initialize
+! !
+!Ag class categoriesFor: #new!public! !
 

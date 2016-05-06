@@ -1,45 +1,46 @@
 "Filed out from Dolphin Smalltalk 7"!
 
 Model subclass: #Gen
-	instanceVariableNames: 'nombre posicion'
+	instanceVariableNames: 'nombre caracteristicas aptitud'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
-Gen guid: (GUID fromString: '{81058575-B619-4315-AF48-DDD1A55C3CA6}')!
-Gen comment: 'Esta Clase se usa para definir cada gen que compondran los cromosomas.'!
+Gen guid: (GUID fromString: '{A176475E-F6E0-43D0-BF7F-1D2D90E925A1}')!
+Gen comment: ''!
 !Gen categoriesForClass!Unclassified! !
 !Gen methodsFor!
 
-nombre
-	"Answer the value of the receiver's 'nombre' instance variable."
+aptitud
+	^aptitud!
 
-	^nombre!
+aptitud: anObject
+	aptitud := anObject!
 
-nombre: anObject
-	"Set the value of the receiver's 'nombre' instance variable to the argument."
+caracteristicas: anObject
+	caracteristicas := anObject!
 
-	nombre := anObject!
+carateristicas
+	^caracteristicas!
 
-posicion
-	"Answer the value of the receiver's 'posicion' instance variable."
+dameTusCaracteristicasDesde: start a: stop
+	| listaGenes |
+	listaGenes := OrderedCollection new.
+	caracteristicas do: [:caracteristica | listaGenes add: (caracteristica posicion copyFrom: start to: stop)].
+	^listaGenes!
 
-	^posicion!
-
-posicion: anObject
-	"Set the value of the receiver's 'posicion' instance variable to the argument."
-
-	posicion := anObject! !
-!Gen categoriesFor: #nombre!accessing!public! !
-!Gen categoriesFor: #nombre:!accessing!public! !
-!Gen categoriesFor: #posicion!accessing!public! !
-!Gen categoriesFor: #posicion:!accessing!public! !
+initialize
+	self caracteristicas: OrderedCollection new! !
+!Gen categoriesFor: #aptitud!public! !
+!Gen categoriesFor: #aptitud:!public! !
+!Gen categoriesFor: #caracteristicas:!accessing!public! !
+!Gen categoriesFor: #carateristicas!public! !
+!Gen categoriesFor: #dameTusCaracteristicasDesde:a:!public! !
+!Gen categoriesFor: #initialize!public! !
 
 !Gen class methodsFor!
 
-new: unArray
-	|gen|
-	gen:= self new.
-	gen posicion: unArray.
-	^gen! !
-!Gen class categoriesFor: #new:!public! !
+new
+	^super new initialize
+! !
+!Gen class categoriesFor: #new!public! !
 
