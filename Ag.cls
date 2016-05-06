@@ -1,7 +1,7 @@
 "Filed out from Dolphin Smalltalk 7"!
 
 Model subclass: #Ag
-	instanceVariableNames: 'poblacionInicial poblacion_seleccionada mutacion cruzamiento seleccion aptitud'
+	instanceVariableNames: 'poblacionInicial poblacion_seleccionada poblacionMundial mutacion cruzamiento seleccion aptitud'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -16,6 +16,12 @@ aptitud
 aptitud: anObject
 	aptitud := anObject!
 
+cargarPoblacion
+	| fileIn byteArray |
+	fileIn := FileStream read: 'poblacion'.
+	byteArray := fileIn collection asByteArray.
+	poblacionMundial := ODBDeserializer deserializeFromBytes: byteArray!
+
 convertir_a_decimal: unArray
 	| iteracion acum |
 	iteracion := 0.
@@ -26,11 +32,23 @@ convertir_a_decimal: unArray
 			iteracion := iteracion + 1].
 	^acum!
 
+crearGen: unNombre
+	| gen |
+	gen := Gen new.
+	gen nombre: unNombre.
+	^gen!
+
 cruzamiento
 	^cruzamiento!
 
 cruzamiento: anObject
 	cruzamiento := anObject!
+
+guardarPoblacion
+|fileOut|
+fileOut :=FileStream write: 'poblacion'.
+fileOut nextPutAll:  (ODBSerializer serializeToBytes: self poblacionMundial).
+fileOut flush; close.!
 
 initialize
 	self aptitud: Aptitud new.
@@ -54,6 +72,12 @@ poblacionInicial
 poblacionInicial: anObject
 	poblacionInicial := anObject!
 
+poblacionMundial
+	^poblacionMundial!
+
+poblacionMundial: anObject
+	poblacionMundial := anObject!
+
 seleccion
 	^seleccion!
 
@@ -61,9 +85,12 @@ seleccion: anObject
 	seleccion := anObject! !
 !Ag categoriesFor: #aptitud!accessing!public! !
 !Ag categoriesFor: #aptitud:!accessing!public! !
+!Ag categoriesFor: #cargarPoblacion!public! !
 !Ag categoriesFor: #convertir_a_decimal:!public! !
+!Ag categoriesFor: #crearGen:!public! !
 !Ag categoriesFor: #cruzamiento!accessing!public! !
 !Ag categoriesFor: #cruzamiento:!accessing!public! !
+!Ag categoriesFor: #guardarPoblacion!public! !
 !Ag categoriesFor: #initialize!public! !
 !Ag categoriesFor: #mutacion!accessing!public! !
 !Ag categoriesFor: #mutacion:!accessing!public! !
@@ -71,6 +98,8 @@ seleccion: anObject
 !Ag categoriesFor: #poblacion_seleccionada:!accessing!public! !
 !Ag categoriesFor: #poblacionInicial!accessing!public! !
 !Ag categoriesFor: #poblacionInicial:!accessing!public! !
+!Ag categoriesFor: #poblacionMundial!accessing!private! !
+!Ag categoriesFor: #poblacionMundial:!accessing!private! !
 !Ag categoriesFor: #seleccion!accessing!public! !
 !Ag categoriesFor: #seleccion:!accessing!public! !
 
