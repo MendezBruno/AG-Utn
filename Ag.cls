@@ -1,7 +1,7 @@
 "Filed out from Dolphin Smalltalk 7"!
 
 Model subclass: #Ag
-	instanceVariableNames: 'poblacionInicial poblacion_seleccionada poblacionMundial mutacion cruzamiento seleccion aptitud'
+	instanceVariableNames: 'poblacionInicial poblacion_seleccionada poblacionMundial poblacionRestante mutacion cruzamiento seleccion aptitud'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -25,7 +25,7 @@ buscarGen: unGen
 
 cargarPoblacion
 	| fileIn byteArray |
-	fileIn := FileStream read: 'poblacion'.
+	fileIn := FileStream read: 'C:\Users\bruno\Desktop\poblacion'.
 	byteArray := fileIn collection asByteArray.
 	poblacionMundial := ODBDeserializer deserializeFromBytes: byteArray!
 
@@ -52,22 +52,34 @@ cruzamiento: anObject
 	cruzamiento := anObject!
 
 dameUnCromosoma
-	| cromosoma |
+	| cromosoma gen |
 	cromosoma := Cromosoma new.
-	1 to: 3 do: [:i | cromosoma genes add: (self dameUnGen: self poblacionMundial)].
+	3 timesRepeat: 
+			[gen := self dameUnGen.
+			cromosoma genes add: gen.
+			poblacionRestante remove: gen].
 	^cromosoma!
 
-dameUnGen: poblacionMundial
+dameUnGen
 	| random num |
-	random := Random new.
-	num := (random next * poblacionMundial size) rounded.
+	num := self numNoCero: poblacionRestante size.
+	^poblacionRestante at: num!
+
+dameUnGenNoRepetido: unCromosoma
+	| random num |
+	num := self numNoCero: poblacionMundial size.
+	[unCromosoma genes includes: (poblacionMundial at: num)]
+		whileTrue: [num := self numNoCero: poblacionMundial size].
 	^poblacionMundial at: num!
 
 existeGen: unGen
-^poblacionMundial anySatisfy: [:each | (self convertir_a_decimal: each posicion) =  (self convertir_a_decimal: unGen posicion) ]!
+^poblacionMundial anySatisfy: [:each |self halt. (self convertir_a_decimal: each posicion) =  (self convertir_a_decimal: unGen posicion) ]!
 
 generanPoblacionInicial
-	1 to: 5 do: [:i | poblacionInicial add: self dameUnCromosoma]!
+	self poblacionRestante addAll: poblacionMundial.
+	5 timesRepeat: 
+			[poblacionInicial add: self dameUnCromosoma.
+			self poblacionRestante addAll: poblacionMundial]!
 
 guardarPoblacion
 	| fileOut |
@@ -89,13 +101,22 @@ initialize
 	self aptitud: Aptitud new.
 	self seleccion: Torneo new.
 	self poblacionMundial: OrderedCollection new.
-	self poblacionInicial: OrderedCollection new.!
+	self poblacionInicial: OrderedCollection new.
+	self poblacionRestante: OrderedCollection new!
 
 mutacion
 	^mutacion!
 
 mutacion: anObject
 	mutacion := anObject!
+
+numNoCero: unNum
+	| random num |
+	num := 0.
+	[num = 0] whileTrue: 
+			[random := Random new.
+			num := (random next * (unNum - 1)) rounded + 1].
+	^num!
 
 poblacion_seleccionada
 	^poblacion_seleccionada!
@@ -115,6 +136,12 @@ poblacionMundial
 poblacionMundial: anObject
 	poblacionMundial := anObject!
 
+poblacionRestante
+	^poblacionRestante!
+
+poblacionRestante: anObject
+	poblacionRestante := anObject!
+
 seleccion
 	^seleccion!
 
@@ -130,19 +157,23 @@ seleccion: anObject
 !Ag categoriesFor: #cruzamiento!accessing!public! !
 !Ag categoriesFor: #cruzamiento:!accessing!public! !
 !Ag categoriesFor: #dameUnCromosoma!public! !
-!Ag categoriesFor: #dameUnGen:!public! !
+!Ag categoriesFor: #dameUnGen!public! !
+!Ag categoriesFor: #dameUnGenNoRepetido:!public! !
 !Ag categoriesFor: #existeGen:!public! !
 !Ag categoriesFor: #generanPoblacionInicial!public! !
 !Ag categoriesFor: #guardarPoblacion!public! !
 !Ag categoriesFor: #initialize!public! !
 !Ag categoriesFor: #mutacion!accessing!public! !
 !Ag categoriesFor: #mutacion:!accessing!public! !
+!Ag categoriesFor: #numNoCero:!public! !
 !Ag categoriesFor: #poblacion_seleccionada!accessing!public! !
 !Ag categoriesFor: #poblacion_seleccionada:!accessing!public! !
 !Ag categoriesFor: #poblacionInicial!accessing!public! !
 !Ag categoriesFor: #poblacionInicial:!accessing!public! !
 !Ag categoriesFor: #poblacionMundial!accessing!private! !
 !Ag categoriesFor: #poblacionMundial:!accessing!private! !
+!Ag categoriesFor: #poblacionRestante!accessing!public! !
+!Ag categoriesFor: #poblacionRestante:!accessing!public! !
 !Ag categoriesFor: #seleccion!accessing!public! !
 !Ag categoriesFor: #seleccion:!accessing!public! !
 

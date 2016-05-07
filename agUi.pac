@@ -118,8 +118,8 @@ cargaDiaSemana
 	elemDiaSemana at: 'Martes' put: #(0 1 0).
 	elemDiaSemana at: 'Miercoles' put: #(0 1 1).
 	elemDiaSemana at: 'Jueves' put: #(1 0 0).
-	elemDiaSemana at: 'Viernes' put: #(1 0 0).
-	elemDiaSemana at: 'Sabado' put: #(1 0 0)!
+	elemDiaSemana at: 'Viernes' put: #(1 0 1).
+	elemDiaSemana at: 'Sabado' put: #(1 1 0)!
 
 cargarCombos
 
@@ -197,11 +197,12 @@ guardarMateria
 		tipo: ctrlComboBoxDificultad selection.
 	auxGen diaSemana: (self elemDiaSemana at: ctrlComboBoxDiaSemana selection)
 		tipo: ctrlComboBoxDiaSemana selection.
+	self halt.
 	(self model existeGen: auxGen)
-		ifTrue: 
+		ifTrue: [MessageBox errorMsg: 'Materia ya existe' caption: 'Algoritmo Genético']
+		ifFalse: 
 			[self model agregarGen: auxGen.
-			MessageBox notify: 'Materia guardada exitosamente' caption: 'Algoritmo Genético']
-		ifFalse: [MessageBox errorMsg: 'Materia ya existe' caption: 'Algoritmo Genético']!
+			MessageBox notify: 'Materia guardada exitosamente' caption: 'Algoritmo Genético']!
 
 habilitarBotonGuardar
 	^(ctrlNombreMateria ~= '' and: [ctrlComboBoxDiaSemana hasSelection])

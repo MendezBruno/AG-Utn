@@ -21,10 +21,14 @@
 	"Prueba para obtener un gen"
 	poblacion cromosomas first genes first posicion at:0.
 
+ag:= Ag new.
 ShellAgPresenter showOn: ag.
 
 ag guardarPoblacion.
 ag cargarPoblacion.
+ag generanPoblacionInicial.
+
+
 
 
 
