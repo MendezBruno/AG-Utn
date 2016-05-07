@@ -51,8 +51,23 @@ cruzamiento
 cruzamiento: anObject
 	cruzamiento := anObject!
 
+dameUnCromosoma
+	| cromosoma |
+	cromosoma := Cromosoma new.
+	1 to: 3 do: [:i | cromosoma genes add: (self dameUnGen: self poblacionMundial)].
+	^cromosoma!
+
+dameUnGen: poblacionMundial
+	| random num |
+	random := Random new.
+	num := (random next * poblacionMundial size) rounded.
+	^poblacionMundial at: num!
+
 existeGen: unGen
 ^poblacionMundial anySatisfy: [:each | (self convertir_a_decimal: each posicion) =  (self convertir_a_decimal: unGen posicion) ]!
+
+generanPoblacionInicial
+	1 to: 5 do: [:i | poblacionInicial add: self dameUnCromosoma]!
 
 guardarPoblacion
 	| fileOut |
@@ -73,7 +88,8 @@ guardarPoblacion
 initialize
 	self aptitud: Aptitud new.
 	self seleccion: Torneo new.
-	self poblacionMundial: OrderedCollection new.!
+	self poblacionMundial: OrderedCollection new.
+	self poblacionInicial: OrderedCollection new.!
 
 mutacion
 	^mutacion!
@@ -113,7 +129,10 @@ seleccion: anObject
 !Ag categoriesFor: #crearGen:!public! !
 !Ag categoriesFor: #cruzamiento!accessing!public! !
 !Ag categoriesFor: #cruzamiento:!accessing!public! !
+!Ag categoriesFor: #dameUnCromosoma!public! !
+!Ag categoriesFor: #dameUnGen:!public! !
 !Ag categoriesFor: #existeGen:!public! !
+!Ag categoriesFor: #generanPoblacionInicial!public! !
 !Ag categoriesFor: #guardarPoblacion!public! !
 !Ag categoriesFor: #initialize!public! !
 !Ag categoriesFor: #mutacion!accessing!public! !
