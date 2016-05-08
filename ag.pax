@@ -12,7 +12,7 @@ package classNames
 	add: #AptitudSuperposicion;
 	add: #AptitudValoracion;
 	add: #Cromosoma;
-	add: #CruzamientoRandom;
+	add: #CruzamientoSimple;
 	add: #CruzamientoStrategy;
 	add: #Gen;
 	add: #MutacionEstrategy;
@@ -28,8 +28,8 @@ package globalAliases: (Set new
 	yourself).
 
 package setPrerequisites: (IdentitySet new
-	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
-	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Contributions\ITC Gorisek\OmniBase';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Contributions\ITC Gorisek\OmniBase';
 	yourself).
 
 package!
@@ -37,7 +37,7 @@ package!
 "Class Definitions"!
 
 Model subclass: #Ag
-	instanceVariableNames: 'poblacionInicial poblacion_seleccionada poblacionMundial poblacionRestante mutacion cruzamiento seleccion aptitud'
+	instanceVariableNames: 'poblacionInicial poblacionCruzada poblacion_seleccionada poblacionMundial poblacionRestante mutacion cruzamiento seleccion aptitud'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -96,7 +96,7 @@ Model subclass: #SeleccionStrategy
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
-CruzamientoStrategy subclass: #CruzamientoRandom
+CruzamientoStrategy subclass: #CruzamientoSimple
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''

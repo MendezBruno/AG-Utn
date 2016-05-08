@@ -16,14 +16,10 @@ poblacion
 poblacion: anObject
 	poblacion := anObject!
 
-seleccionar
-
-	 poblacion cromosomas sortUsing: (DefaultSortAlgorithm sortBlock: [:a :b |a aptitud >b aptitud ]).
-
-	^poblacion
-
-! !
+seleccion: unaPoblacion
+	unaPoblacion  sortUsing: (DefaultSortAlgorithm sortBlock: [:a :b | a aptitud > b aptitud]).
+	^unaPoblacion! !
 !Torneo categoriesFor: #poblacion!accessing!private! !
 !Torneo categoriesFor: #poblacion:!accessing!private! !
-!Torneo categoriesFor: #seleccionar!public! !
+!Torneo categoriesFor: #seleccion:!public! !
 

@@ -28,9 +28,7 @@ ag guardarPoblacion.
 ag cargarPoblacion.
 ag generanPoblacionInicial.
 
-
-
-
+9//2
 
 | r s |
 

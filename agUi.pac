@@ -9,6 +9,7 @@ package classNames
 	add: #ShellAgPresenter;
 	add: #ShellCargarPoblacion;
 	add: #ShellCargarPoblacionPresenter;
+	add: #ShellCorrerAlgoritmo;
 	add: #ShellPoblacionActualPresenter;
 	add: #ShellViewPoblacionActual;
 	yourself.
@@ -20,14 +21,16 @@ package globalAliases: (Set new
 	yourself).
 
 package setPrerequisites: (IdentitySet new
-	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
-	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Presenters\Boolean\Dolphin Boolean Presenter';
-	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Models\List\Dolphin List Models';
-	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Presenters\List\Dolphin List Presenter';
-	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Base\Dolphin MVP Base';
-	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Presenters\Text\Dolphin Text Presenter';
-	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Type Converters\Dolphin Type Converters';
-	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Models\Value\Dolphin Value Models';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Presenters\Boolean\Dolphin Boolean Presenter';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Models\List\Dolphin List Models';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Presenters\List\Dolphin List Presenter';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Base\Dolphin MVP Base';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Presenters\Number\Dolphin Number Presenter';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Views\Styled Views\Dolphin Styled Views';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Presenters\Text\Dolphin Text Presenter';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Type Converters\Dolphin Type Converters';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Models\Value\Dolphin Value Models';
 	yourself).
 
 package!
@@ -41,6 +44,11 @@ Shell subclass: #ShellAgPresenter
 	classInstanceVariableNames: ''!
 Shell subclass: #ShellCargarPoblacionPresenter
 	instanceVariableNames: 'ctrlNombreMateria ctrlCheckBoxFinal ctrlComboBoxDificultad ctrlComboBoxDiaSemana elemDificultad elemDiaSemana'
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+Shell subclass: #ShellCorrerAlgoritmo
+	instanceVariableNames: 'ctrlNumeroDeCorridas ctrlConteinerResultado ctrlNumeroPoblacionInicial'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -84,6 +92,9 @@ ShellAgPresenter comment: ''!
 cargarPoblacionShell
 	ShellCargarPoblacionPresenter showOn: self model.!
 
+correrAlgoritmoShell
+	ShellCorrerAlgoritmo showOn: self model!
+
 onViewOpened
 	super onViewOpened.
 	(File exists: 'poblacion') ifTrue: [ self model cargarPoblacion].!
@@ -91,6 +102,7 @@ onViewOpened
 verPoblacionActualShell
 	ShellPoblacionActualPresenter showOn: self model.! !
 !ShellAgPresenter categoriesFor: #cargarPoblacionShell!public! !
+!ShellAgPresenter categoriesFor: #correrAlgoritmoShell!public! !
 !ShellAgPresenter categoriesFor: #onViewOpened!public! !
 !ShellAgPresenter categoriesFor: #verPoblacionActualShell!public! !
 
@@ -256,6 +268,63 @@ resource_Default_view
 
 	^#(#'!!STL' 3 788558 10 ##(Smalltalk.STBViewProxy) 8 ##(Smalltalk.ShellView) 98 27 0 0 98 2 26214401 131073 416 0 524550 ##(Smalltalk.ColorRef) 8 4278190080 0 39 0 0 0 416 1180166 ##(Smalltalk.ProportionalLayout) 234 240 98 0 16 234 256 576 0 0 0 0 0 13219 0 0 0 0 1 0 0 983302 ##(Smalltalk.MessageSequence) 202 208 98 2 721670 ##(Smalltalk.MessageSend) 8 #createAt:extent: 98 2 328198 ##(Smalltalk.Point) 2731 21 738 721 801 416 674 8 #updateMenuBar 576 416 983302 ##(Smalltalk.WINDOWPLACEMENT) 8 #[44 0 0 0 0 0 0 0 0 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 85 5 0 0 10 0 0 0 189 6 0 0 154 1 0 0] 98 5 410 8 ##(Smalltalk.ContainerView) 98 15 0 416 98 2 8 1140850688 131073 880 0 0 0 7 0 0 0 880 530 234 240 576 32 234 256 98 2 410 8 ##(Smalltalk.TextEdit) 98 16 0 880 98 2 8 1140916352 1025 1024 0 482 8 4278190080 0 7 0 0 0 1024 0 8 4294902755 852486 ##(Smalltalk.NullConverter) 0 0 1 610 202 208 98 3 674 704 98 2 738 355 41 738 355 69 1024 674 8 #selectionRange: 98 1 525062 ##(Smalltalk.Interval) 3 1 3 1024 674 8 #isTextModified: 98 1 32 1024 818 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 177 0 0 0 20 0 0 0 98 1 0 0 54 0 0 0] 98 0 738 193 193 0 27 8 'textBoxNombreMateria' 590342 ##(Smalltalk.Rectangle) 738 1 41 738 1 41 610 202 208 98 1 674 704 98 2 738 1 1 738 709 149 880 818 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 98 1 0 0 74 0 0 0] 98 2 410 8 ##(Smalltalk.StaticText) 98 16 0 880 98 2 8 1140850944 65 1728 0 0 0 7 0 263174 ##(Smalltalk.Font) 0 16 459014 ##(Smalltalk.LOGFONT) 8 #[240 255 255 255 0 0 0 0 0 0 0 0 0 0 0 0 188 2 0 0 0 0 0 0 1 2 1 34 83 121 115 116 101 109 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] 738 193 193 0 1728 0 8 4294903325 1154 0 0 0 610 202 208 98 2 674 704 98 2 738 1 41 738 355 69 1728 674 8 #text: 98 1 8 'Nombre de la materia:' 1728 818 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 20 0 0 0 177 0 0 0 54 0 0 0] 98 0 1472 0 27 1024 1472 0 27 410 896 98 15 0 416 98 2 8 1140850688 131073 2160 0 0 0 7 0 0 0 2160 788230 ##(Smalltalk.BorderLayout) 1 1 0 0 0 410 1744 98 16 0 2160 98 2 8 1140850944 65 2256 0 0 0 7 0 1810 0 16 1842 8 #[240 255 255 255 0 0 0 0 0 0 0 0 0 0 0 0 188 2 0 0 0 0 0 0 1 2 1 34 83 121 115 116 101 109 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] 738 193 193 0 2256 0 8 4294903325 1154 0 0 0 610 202 208 98 2 674 704 98 2 738 1 41 738 345 69 2256 674 2064 98 1 8 'Tiene Final?' 2256 818 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 20 0 0 0 172 0 0 0 54 0 0 0] 98 0 1472 0 27 410 8 ##(Smalltalk.CheckBox) 98 16 0 2160 98 2 8 1409363203 1 2624 721990 2 ##(Smalltalk.ValueHolder) 0 0 1114118 ##(Smalltalk.NeverSearchPolicy) 32 0 0 7 0 0 0 2624 0 8 4294903029 1154 0 0 0 610 202 208 98 2 674 704 98 2 738 345 41 738 365 69 2624 674 2064 98 1 8 'Sí' 2624 818 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 172 0 0 0 20 0 0 0 98 1 0 0 54 0 0 0] 98 0 1472 0 27 234 256 98 2 2624 8 'checkBoxFinal' 1506 738 1 41 738 1 41 610 202 208 98 1 674 704 98 2 738 1 149 738 709 149 2160 818 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 74 0 0 0 98 1 0 0 148 0 0 0] 98 2 2256 2624 1472 0 27 410 896 98 15 0 416 98 2 8 1140850688 131073 3264 0 0 0 7 0 0 0 3264 0 234 256 98 2 410 8 ##(Smalltalk.ComboBox) 98 17 0 3264 98 2 8 1412498947 1025 3360 590662 2 ##(Smalltalk.ListModel) 202 208 576 0 1310726 ##(Smalltalk.IdentitySearchPolicy) 482 8 4278190080 0 7 0 0 0 3360 0 8 4294902769 459270 ##(Smalltalk.Message) 8 #displayString 98 0 576 401 610 202 208 98 1 674 704 98 2 738 345 33 738 341 53 3360 818 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 172 0 0 0 16 0 0 0 86 1 0 0 42 0 0 0] 98 0 1472 0 27 8 'comboBoxDificultad' 0 610 202 208 98 1 674 704 98 2 738 1 297 738 709 149 3264 818 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 148 0 0 0 98 1 0 0 222 0 0 0] 98 2 410 1744 98 16 0 3264 98 2 8 1140850944 65 3968 0 0 0 7 0 1810 0 16 1842 8 #[240 255 255 255 0 0 0 0 0 0 0 0 0 0 0 0 188 2 0 0 0 0 0 0 1 2 1 34 83 121 115 116 101 109 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] 738 193 193 0 3968 0 8 4294903325 1154 0 0 0 610 202 208 98 2 674 704 98 2 738 5 33 738 251 51 3968 674 2064 98 1 8 'Dificultad:' 3968 818 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 2 0 0 0 16 0 0 0 127 0 0 0 41 0 0 0] 98 0 1472 0 27 3360 1472 0 27 410 896 98 15 0 416 98 2 8 1140850688 131073 4336 0 0 0 7 0 0 0 4336 0 234 256 98 2 410 3376 98 17 0 4336 98 2 8 1412498947 1025 4432 3442 202 208 576 0 3504 482 3536 0 7 0 0 0 4432 0 8 4294902769 3570 3600 98 0 576 401 610 202 208 98 1 674 704 98 2 738 345 31 738 341 53 4432 818 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 172 0 0 0 15 0 0 0 86 1 0 0 41 0 0 0] 98 0 1472 0 27 8 'comboBoxDiaSemana' 0 610 202 208 98 1 674 704 98 2 738 1 445 738 709 149 4336 818 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 222 0 0 0 98 1 0 0 40 1 0 0] 98 2 410 1744 98 16 0 4336 98 2 8 1140850944 65 4928 0 0 0 7 0 1810 0 16 1842 8 #[240 255 255 255 0 0 0 0 0 0 0 0 0 0 0 0 188 2 0 0 0 0 0 0 1 2 1 34 83 121 115 116 101 109 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] 738 193 193 0 4928 0 8 4294903325 1154 0 0 0 610 202 208 98 2 674 704 98 2 738 11 31 738 241 39 4928 674 2064 98 1 8 'Día de la semana:' 4928 818 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 5 0 0 0 15 0 0 0 125 0 0 0 34 0 0 0] 98 0 1472 0 27 4432 1472 0 27 410 896 98 15 0 416 98 2 8 1140850688 131073 5296 0 0 0 7 0 0 0 5296 530 234 240 576 32 234 256 576 0 610 202 208 98 1 674 704 98 2 738 1 593 738 709 151 5296 818 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 40 1 0 0 98 1 0 0 115 1 0 0] 98 2 410 8 ##(Smalltalk.PushButton) 98 20 0 5296 98 2 8 1140924416 1 5568 0 0 0 7 0 0 0 5568 0 8 4294903029 1180998 4 ##(Smalltalk.CommandDescription) 8 #guardarMateria 8 'Guardar' 1 1 0 0 16 0 0 0 610 202 208 98 3 674 704 98 2 738 1 1 738 355 151 5568 674 8 #isEnabled: 98 1 32 5568 674 2064 98 1 8 'Guardar' 5568 818 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 177 0 0 0 75 0 0 0] 98 0 1472 0 29 410 5584 98 20 0 5296 98 2 8 1140924416 1 5984 0 0 0 7 0 0 0 5984 0 8 4294903029 5666 8 #cancel 8 '&Cancelar' 1 1 0 0 32 0 0 0 610 202 208 98 3 674 704 98 2 738 355 1 738 355 151 5984 674 5856 98 1 32 5984 674 2064 98 1 8 '&Cancelar' 5984 818 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 177 0 0 0 0 0 0 0 98 1 0 0 75 0 0 0] 98 0 1472 0 29 1472 0 27 1472 0 27 )! !
 !ShellCargarPoblacionPresenter class categoriesFor: #resource_Default_view!public!resources-views! !
+
+ShellCorrerAlgoritmo guid: (GUID fromString: '{042AED47-A19D-4EE2-9E89-179100A7F285}')!
+ShellCorrerAlgoritmo comment: ''!
+!ShellCorrerAlgoritmo categoriesForClass!MVP-Presenters! !
+!ShellCorrerAlgoritmo methodsFor!
+
+correrAlgoritmo
+	self model generanPoblacionInicial: ctrlNumeroPoblacionInicial value.
+	ctrlNumeroDeCorridas value timesRepeat: 
+			[self halt. self model seleccion.
+			self model cruzamiento.
+			self model mutacion]!
+
+createComponents
+	super createComponents.
+	ctrlNumeroDeCorridas := self add: NumberPresenter new name: 'boxNumCorridas'.
+	ctrlConteinerResultado := self add: TextPresenter new name: 'conteinerResultado'.
+	ctrlNumeroPoblacionInicial := self add: NumberPresenter new name: 'boxCantidadDePoblacionInicial'!
+
+ctrlConteinerResultado
+	^ctrlConteinerResultado!
+
+ctrlConteinerResultado: anObject
+	ctrlConteinerResultado := anObject!
+
+ctrlNumeroDeCorridas
+	^ctrlNumeroDeCorridas!
+
+ctrlNumeroDeCorridas: anObject
+	ctrlNumeroDeCorridas := anObject!
+
+ctrlNumeroPoblacionInicial
+	^ctrlNumeroPoblacionInicial!
+
+ctrlNumeroPoblacionInicial: anObject
+	ctrlNumeroPoblacionInicial := anObject! !
+!ShellCorrerAlgoritmo categoriesFor: #correrAlgoritmo!public! !
+!ShellCorrerAlgoritmo categoriesFor: #createComponents!public! !
+!ShellCorrerAlgoritmo categoriesFor: #ctrlConteinerResultado!accessing!public! !
+!ShellCorrerAlgoritmo categoriesFor: #ctrlConteinerResultado:!accessing!public! !
+!ShellCorrerAlgoritmo categoriesFor: #ctrlNumeroDeCorridas!accessing!public! !
+!ShellCorrerAlgoritmo categoriesFor: #ctrlNumeroDeCorridas:!accessing!public! !
+!ShellCorrerAlgoritmo categoriesFor: #ctrlNumeroPoblacionInicial!accessing!public! !
+!ShellCorrerAlgoritmo categoriesFor: #ctrlNumeroPoblacionInicial:!accessing!public! !
+
+!ShellCorrerAlgoritmo class methodsFor!
+
+resource_Default_view
+	"Answer the literal data from which the 'Default view' resource can be reconstituted.
+	DO NOT EDIT OR RECATEGORIZE THIS METHOD.
+
+	If you wish to modify this resource evaluate:
+	ViewComposer openOn: (ResourceIdentifier class: self selector: #resource_Default_view)
+	"
+
+	^#(#'!!STL' 3 788558 10 ##(Smalltalk.STBViewProxy) 8 ##(Smalltalk.ShellView) 98 27 0 0 98 2 27131905 131073 416 0 524550 ##(Smalltalk.ColorRef) 8 4278190080 0 551 0 0 0 416 1180166 ##(Smalltalk.ProportionalLayout) 234 240 98 0 32 234 256 98 2 410 8 ##(Smalltalk.StyledContainer) 98 22 0 416 98 2 8 1174405120 131073 624 0 0 0 7 0 0 0 624 0 234 256 576 0 202 208 98 4 8 #top 8 #bottom 8 #left 8 #right 590598 ##(Smalltalk.StyledPen) 786694 ##(Smalltalk.IndexedColor) 33554433 5 98 1 3 1246214 ##(Smalltalk.StyledGradientBrush) 721158 ##(Smalltalk.SystemColor) 31 0 328198 ##(Smalltalk.Point) 327734 ##(Smalltalk.Float) 8 0 0 0 0 0 0 224 63 1 962 994 8 0 0 0 0 0 0 224 63 3 98 4 41 41 41 41 16 0 1 983302 ##(Smalltalk.MessageSequence) 202 208 98 1 721670 ##(Smalltalk.MessageSend) 8 #createAt:extent: 98 2 962 1 1 962 533 739 624 983302 ##(Smalltalk.WINDOWPLACEMENT) 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 10 1 0 0 113 1 0 0] 98 0 962 193 193 0 27 8 'conteinerResultado' 0 0 0 0 0 1 0 0 0 0 1 0 0 1074 202 208 98 3 1138 1168 98 2 962 2731 21 962 1081 801 416 1138 8 #text: 98 1 8 'Correr el Algoritmo - Algoritmo Genético' 416 1138 8 #updateMenuBar 576 416 1234 8 #[44 0 0 0 0 0 0 0 0 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 85 5 0 0 10 0 0 0 113 7 0 0 154 1 0 0] 98 2 624 410 8 ##(Smalltalk.ContainerView) 98 15 0 416 98 2 8 1140850688 131073 1584 0 0 0 7 0 0 0 1584 530 234 240 98 4 410 1600 98 15 0 1584 98 2 8 1140850688 131073 1712 0 0 0 7 0 0 0 1712 530 234 240 576 32 234 256 576 0 1074 202 208 98 1 1138 1168 98 2 962 1 553 962 533 187 1712 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 20 1 0 0 10 1 0 0 113 1 0 0] 98 1 410 8 ##(Smalltalk.PushButton) 98 20 0 1712 98 2 8 1140924416 1 1984 0 0 0 7 0 0 0 1984 0 8 4294903111 1180998 4 ##(Smalltalk.CommandDescription) 8 #correrAlgoritmo 8 'Correr' 1 1 0 0 32 0 0 0 1074 202 208 98 3 1138 1168 98 2 962 1 1 962 533 187 1984 1138 8 #isEnabled: 98 1 32 1984 1138 1456 98 1 8 'Correr' 1984 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 10 1 0 0 93 0 0 0] 98 0 1296 0 29 1296 0 27 524806 ##(Smalltalk.Fraction) 369 371 410 1600 98 15 0 1584 98 2 8 1140850688 131073 2432 0 0 0 7 0 0 0 2432 0 234 256 576 0 1074 202 208 98 1 1138 1168 98 2 962 1 185 962 533 185 2432 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 92 0 0 0 10 1 0 0 184 0 0 0] 98 0 1296 0 27 2402 373 371 16 234 256 576 0 1074 202 208 98 1 1138 1168 98 2 962 533 1 962 533 739 1584 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 10 1 0 0 0 0 0 0 20 2 0 0 113 1 0 0] 98 4 410 1600 98 15 0 1584 98 2 8 1140850688 131073 2864 0 0 0 7 0 0 0 2864 0 234 256 98 4 410 8 ##(Smalltalk.TextEdit) 98 16 0 2864 98 2 8 1140916224 1025 2960 0 482 8 4278190080 0 7 0 0 0 2960 0 8 4294903123 787206 ##(Smalltalk.NumberToText) 0 8 '' 0 1 1074 202 208 98 3 1138 1168 98 2 962 411 51 962 71 41 2960 1138 8 #selectionRange: 98 1 525062 ##(Smalltalk.Interval) 3 1 3 2960 1138 8 #isTextModified: 98 1 32 2960 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 205 0 0 0 25 0 0 0 240 0 0 0 45 0 0 0] 98 0 1296 0 27 8 'boxNumCorridas' 410 2976 98 16 0 2864 98 2 8 1140916224 1025 3440 0 482 3056 0 7 0 0 0 3440 0 8 4294903123 3090 0 8 '' 0 1 1074 202 208 98 3 1138 1168 98 2 962 411 111 962 71 41 3440 1138 3264 98 1 3298 3 1 3 3440 1138 3344 98 1 32 3440 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 205 0 0 0 55 0 0 0 240 0 0 0 75 0 0 0] 98 0 1296 0 27 8 'boxCantidadDePoblacionInicial' 0 1074 202 208 98 1 1138 1168 98 2 962 1 1 962 533 185 2864 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 10 1 0 0 92 0 0 0] 98 4 410 8 ##(Smalltalk.StaticText) 98 16 0 2864 98 2 8 1140850944 65 3984 0 0 0 7 0 0 0 3984 0 8 4294903169 852486 ##(Smalltalk.NullConverter) 0 0 0 1074 202 208 98 2 1138 1168 98 2 962 51 51 962 241 39 3984 1138 1456 98 1 8 'Número de Corridas' 3984 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 25 0 0 0 25 0 0 0 145 0 0 0 44 0 0 0] 98 0 1296 0 27 2960 410 4000 98 16 0 2864 98 2 8 1140850944 65 4320 0 0 0 7 0 0 0 4320 0 8 4294903169 4082 0 0 0 1074 202 208 98 2 1138 1168 98 2 962 51 107 962 351 41 4320 1138 1456 98 1 8 'Cantidad de Poblacion Inicial' 4320 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 25 0 0 0 53 0 0 0 200 0 0 0 73 0 0 0] 98 0 1296 0 27 3440 1296 0 27 2432 410 1600 98 15 0 1584 98 2 8 1140850688 131073 4624 0 0 0 7 0 0 0 4624 0 234 256 576 0 1074 202 208 98 1 1138 1168 98 2 962 1 369 962 533 185 4624 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 184 0 0 0 10 1 0 0 20 1 0 0] 98 0 1296 0 27 1712 1296 0 27 1296 0 27 )! !
+!ShellCorrerAlgoritmo class categoriesFor: #resource_Default_view!public!resources-views! !
 
 ShellPoblacionActualPresenter guid: (GUID fromString: '{F5AC67BD-7BDE-4475-82F8-E5031EC3631A}')!
 ShellPoblacionActualPresenter comment: ''!

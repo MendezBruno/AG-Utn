@@ -1,7 +1,7 @@
 "Filed out from Dolphin Smalltalk 7"!
 
 Model subclass: #Ag
-	instanceVariableNames: 'poblacionInicial poblacion_seleccionada poblacionMundial poblacionRestante mutacion cruzamiento seleccion aptitud'
+	instanceVariableNames: 'poblacionInicial poblacionCruzada poblacion_seleccionada poblacionMundial poblacionRestante mutacion cruzamiento seleccion aptitud'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -22,6 +22,9 @@ aptitud: anObject
 
 buscarGen: unGen
 ^poblacionMundial detect: [:each | (self convertir_a_decimal: each posicion) =  (self convertir_a_decimal: unGen posicion) ]!
+
+calcularAptitudDePoblacionInicial
+	poblacionInicial do: [:cromo | cromo aptitud: (self aptitud aptitud: cromo)]!
 
 cargarPoblacion
 	| fileIn byteArray |
@@ -46,7 +49,9 @@ crearGen: unNombre
 	^gen!
 
 cruzamiento
-	^cruzamiento!
+	seleccion class = Torneo
+		ifTrue: [self halt. poblacionCruzada := cruzamiento cruzarResTorneo: poblacion_seleccionada].
+"calcularAptitud de poblacion cruzada o mutar primero?"!
 
 cruzamiento: anObject
 	cruzamiento := anObject!
@@ -81,6 +86,12 @@ generanPoblacionInicial
 			[poblacionInicial add: self dameUnCromosoma.
 			self poblacionRestante addAll: poblacionMundial]!
 
+generanPoblacionInicial: unNumero
+	unNumero timesRepeat: 
+			[self poblacionRestante addAll: poblacionMundial.
+			poblacionInicial add: self dameUnCromosoma].
+	self calcularAptitudDePoblacionInicial!
+
 guardarPoblacion
 	| fileOut |
 	(File exists: 'poblacion')
@@ -100,12 +111,20 @@ guardarPoblacion
 initialize
 	self aptitud: Aptitud new.
 	self seleccion: Torneo new.
+	self cruzamiento: CruzamientoSimple new.
 	self poblacionMundial: OrderedCollection new.
 	self poblacionInicial: OrderedCollection new.
 	self poblacionRestante: OrderedCollection new!
 
 mutacion
-	^mutacion!
+	| rGenerator rCromo rGen rPosicion |
+	rGenerator := Random new.
+	rCromo := (rGenerator next * (self poblacionCruzada size - 1)) rounded + 1.
+	rGen := (rGenerator next * 2) rounded + 1.
+	rPosicion := (rGenerator next * 5) rounded + 1.
+	(((self poblacionCruzada at: rCromo) genes at: rGen) posicion at: rPosicion) = 1
+		ifTrue: [((self poblacionCruzada at: rCromo) genes at: rGen) posicion at: rPosicion put: 0]
+		ifFalse: [((self poblacionCruzada at: rCromo) genes at: rGen) posicion at: rPosicion put: 1]!
 
 mutacion: anObject
 	mutacion := anObject!
@@ -123,6 +142,12 @@ poblacion_seleccionada
 
 poblacion_seleccionada: anObject
 	poblacion_seleccionada := anObject!
+
+poblacionCruzada
+	^poblacionCruzada!
+
+poblacionCruzada: anObject
+	poblacionCruzada := anObject!
 
 poblacionInicial
 	^poblacionInicial!
@@ -143,7 +168,7 @@ poblacionRestante: anObject
 	poblacionRestante := anObject!
 
 seleccion
-	^seleccion!
+	self poblacion_seleccionada: (seleccion seleccion: poblacionInicial)!
 
 seleccion: anObject
 	seleccion := anObject! !
@@ -151,6 +176,7 @@ seleccion: anObject
 !Ag categoriesFor: #aptitud!accessing!public! !
 !Ag categoriesFor: #aptitud:!accessing!public! !
 !Ag categoriesFor: #buscarGen:!public! !
+!Ag categoriesFor: #calcularAptitudDePoblacionInicial!public! !
 !Ag categoriesFor: #cargarPoblacion!public! !
 !Ag categoriesFor: #convertir_a_decimal:!public! !
 !Ag categoriesFor: #crearGen:!public! !
@@ -161,6 +187,7 @@ seleccion: anObject
 !Ag categoriesFor: #dameUnGenNoRepetido:!public! !
 !Ag categoriesFor: #existeGen:!public! !
 !Ag categoriesFor: #generanPoblacionInicial!public! !
+!Ag categoriesFor: #generanPoblacionInicial:!public! !
 !Ag categoriesFor: #guardarPoblacion!public! !
 !Ag categoriesFor: #initialize!public! !
 !Ag categoriesFor: #mutacion!accessing!public! !
@@ -168,6 +195,8 @@ seleccion: anObject
 !Ag categoriesFor: #numNoCero:!public! !
 !Ag categoriesFor: #poblacion_seleccionada!accessing!public! !
 !Ag categoriesFor: #poblacion_seleccionada:!accessing!public! !
+!Ag categoriesFor: #poblacionCruzada!accessing!private! !
+!Ag categoriesFor: #poblacionCruzada:!accessing!private! !
 !Ag categoriesFor: #poblacionInicial!accessing!public! !
 !Ag categoriesFor: #poblacionInicial:!accessing!public! !
 !Ag categoriesFor: #poblacionMundial!accessing!private! !

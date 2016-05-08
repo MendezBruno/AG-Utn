@@ -25,9 +25,9 @@ mutate
 	rCromo := (rGenerator next * (cromosomas size - 1)) rounded + 1.
 	rGen := (rGenerator next * 2) rounded + 1.
 	rPosicion := (rGenerator next * 5) rounded + 1.
-	(((self cromosomas at: rCromo) carateristicas at: rGen) posicion at: rPosicion) = 1
-		ifTrue: [((self cromosomas at: rCromo) carateristicas at: rGen) posicion at: rPosicion put: 0]
-		ifFalse: [((self cromosomas at: rCromo) carateristicas at: rGen) posicion at: rPosicion put: 1]! !
+	(((self cromosomas at: rCromo) genes at: rGen) posicion at: rPosicion) = 1
+		ifTrue: [((self cromosomas at: rCromo) genes at: rGen) posicion at: rPosicion put: 0]
+		ifFalse: [((self cromosomas at: rCromo) genes at: rGen) posicion at: rPosicion put: 1]! !
 !Poblacion categoriesFor: #cromosomas!accessing!public! !
 !Poblacion categoriesFor: #cromosomas:!accessing!public! !
 !Poblacion categoriesFor: #initialize!public! !

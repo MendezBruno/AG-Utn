@@ -12,7 +12,7 @@ package classNames
 	add: #AptitudSuperposicion;
 	add: #AptitudValoracion;
 	add: #Cromosoma;
-	add: #CruzamientoRandom;
+	add: #CruzamientoSimple;
 	add: #CruzamientoStrategy;
 	add: #Gen;
 	add: #MutacionEstrategy;
@@ -28,8 +28,8 @@ package globalAliases: (Set new
 	yourself).
 
 package setPrerequisites: (IdentitySet new
-	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
-	add: 'C:\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Contributions\ITC Gorisek\OmniBase';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\Base\Dolphin';
+	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Contributions\ITC Gorisek\OmniBase';
 	yourself).
 
 package!
@@ -37,7 +37,7 @@ package!
 "Class Definitions"!
 
 Model subclass: #Ag
-	instanceVariableNames: 'poblacionInicial poblacion_seleccionada poblacionMundial poblacionRestante mutacion cruzamiento seleccion aptitud'
+	instanceVariableNames: 'poblacionInicial poblacionCruzada poblacion_seleccionada poblacionMundial poblacionRestante mutacion cruzamiento seleccion aptitud'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -96,7 +96,7 @@ Model subclass: #SeleccionStrategy
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
-CruzamientoStrategy subclass: #CruzamientoRandom
+CruzamientoStrategy subclass: #CruzamientoSimple
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
@@ -136,6 +136,9 @@ aptitud: anObject
 buscarGen: unGen
 ^poblacionMundial detect: [:each | (self convertir_a_decimal: each posicion) =  (self convertir_a_decimal: unGen posicion) ]!
 
+calcularAptitudDePoblacionInicial
+	poblacionInicial do: [:cromo | cromo aptitud: (self aptitud aptitud: cromo)]!
+
 cargarPoblacion
 	| fileIn byteArray |
 	fileIn := FileStream read: 'C:\Users\bruno\Desktop\poblacion'.
@@ -159,7 +162,9 @@ crearGen: unNombre
 	^gen!
 
 cruzamiento
-	^cruzamiento!
+	seleccion class = Torneo
+		ifTrue: [self halt. poblacionCruzada := cruzamiento cruzarResTorneo: poblacion_seleccionada].
+"calcularAptitud de poblacion cruzada o mutar primero?"!
 
 cruzamiento: anObject
 	cruzamiento := anObject!
@@ -194,6 +199,12 @@ generanPoblacionInicial
 			[poblacionInicial add: self dameUnCromosoma.
 			self poblacionRestante addAll: poblacionMundial]!
 
+generanPoblacionInicial: unNumero
+	unNumero timesRepeat: 
+			[self poblacionRestante addAll: poblacionMundial.
+			poblacionInicial add: self dameUnCromosoma].
+	self calcularAptitudDePoblacionInicial!
+
 guardarPoblacion
 	| fileOut |
 	(File exists: 'poblacion')
@@ -213,12 +224,20 @@ guardarPoblacion
 initialize
 	self aptitud: Aptitud new.
 	self seleccion: Torneo new.
+	self cruzamiento: CruzamientoSimple new.
 	self poblacionMundial: OrderedCollection new.
 	self poblacionInicial: OrderedCollection new.
 	self poblacionRestante: OrderedCollection new!
 
 mutacion
-	^mutacion!
+	| rGenerator rCromo rGen rPosicion |
+	rGenerator := Random new.
+	rCromo := (rGenerator next * (self poblacionCruzada size - 1)) rounded + 1.
+	rGen := (rGenerator next * 2) rounded + 1.
+	rPosicion := (rGenerator next * 5) rounded + 1.
+	(((self poblacionCruzada at: rCromo) genes at: rGen) posicion at: rPosicion) = 1
+		ifTrue: [((self poblacionCruzada at: rCromo) genes at: rGen) posicion at: rPosicion put: 0]
+		ifFalse: [((self poblacionCruzada at: rCromo) genes at: rGen) posicion at: rPosicion put: 1]!
 
 mutacion: anObject
 	mutacion := anObject!
@@ -236,6 +255,12 @@ poblacion_seleccionada
 
 poblacion_seleccionada: anObject
 	poblacion_seleccionada := anObject!
+
+poblacionCruzada
+	^poblacionCruzada!
+
+poblacionCruzada: anObject
+	poblacionCruzada := anObject!
 
 poblacionInicial
 	^poblacionInicial!
@@ -256,7 +281,7 @@ poblacionRestante: anObject
 	poblacionRestante := anObject!
 
 seleccion
-	^seleccion!
+	self poblacion_seleccionada: (seleccion seleccion: poblacionInicial)!
 
 seleccion: anObject
 	seleccion := anObject! !
@@ -264,6 +289,7 @@ seleccion: anObject
 !Ag categoriesFor: #aptitud!accessing!public! !
 !Ag categoriesFor: #aptitud:!accessing!public! !
 !Ag categoriesFor: #buscarGen:!public! !
+!Ag categoriesFor: #calcularAptitudDePoblacionInicial!public! !
 !Ag categoriesFor: #cargarPoblacion!public! !
 !Ag categoriesFor: #convertir_a_decimal:!public! !
 !Ag categoriesFor: #crearGen:!public! !
@@ -274,6 +300,7 @@ seleccion: anObject
 !Ag categoriesFor: #dameUnGenNoRepetido:!public! !
 !Ag categoriesFor: #existeGen:!public! !
 !Ag categoriesFor: #generanPoblacionInicial!public! !
+!Ag categoriesFor: #generanPoblacionInicial:!public! !
 !Ag categoriesFor: #guardarPoblacion!public! !
 !Ag categoriesFor: #initialize!public! !
 !Ag categoriesFor: #mutacion!accessing!public! !
@@ -281,6 +308,8 @@ seleccion: anObject
 !Ag categoriesFor: #numNoCero:!public! !
 !Ag categoriesFor: #poblacion_seleccionada!accessing!public! !
 !Ag categoriesFor: #poblacion_seleccionada:!accessing!public! !
+!Ag categoriesFor: #poblacionCruzada!accessing!private! !
+!Ag categoriesFor: #poblacionCruzada:!accessing!private! !
 !Ag categoriesFor: #poblacionInicial!accessing!public! !
 !Ag categoriesFor: #poblacionInicial:!accessing!public! !
 !Ag categoriesFor: #poblacionMundial!accessing!private! !
@@ -621,9 +650,9 @@ mutate
 	rCromo := (rGenerator next * (cromosomas size - 1)) rounded + 1.
 	rGen := (rGenerator next * 2) rounded + 1.
 	rPosicion := (rGenerator next * 5) rounded + 1.
-	(((self cromosomas at: rCromo) carateristicas at: rGen) posicion at: rPosicion) = 1
-		ifTrue: [((self cromosomas at: rCromo) carateristicas at: rGen) posicion at: rPosicion put: 0]
-		ifFalse: [((self cromosomas at: rCromo) carateristicas at: rGen) posicion at: rPosicion put: 1]! !
+	(((self cromosomas at: rCromo) genes at: rGen) posicion at: rPosicion) = 1
+		ifTrue: [((self cromosomas at: rCromo) genes at: rGen) posicion at: rPosicion put: 0]
+		ifFalse: [((self cromosomas at: rCromo) genes at: rGen) posicion at: rPosicion put: 1]! !
 !Poblacion categoriesFor: #cromosomas!accessing!public! !
 !Poblacion categoriesFor: #cromosomas:!accessing!public! !
 !Poblacion categoriesFor: #initialize!public! !
@@ -638,9 +667,59 @@ new
 SeleccionStrategy guid: (GUID fromString: '{4EA18C78-4D96-4BF2-8C05-9F90FF393783}')!
 SeleccionStrategy comment: ''!
 !SeleccionStrategy categoriesForClass!MVP-Models! !
-CruzamientoRandom guid: (GUID fromString: '{335521A3-1182-45AC-867E-2A0694C1E1EA}')!
-CruzamientoRandom comment: ''!
-!CruzamientoRandom categoriesForClass!Unclassified! !
+CruzamientoSimple guid: (GUID fromString: '{335521A3-1182-45AC-867E-2A0694C1E1EA}')!
+CruzamientoSimple comment: ''!
+!CruzamientoSimple categoriesForClass!Unclassified! !
+!CruzamientoSimple methodsFor!
+
+cruzaImparUna: unaPoblacion conCantidad: unaCantidad
+	| iteracion |
+	self cruzarCromosoma: unaPoblacion first y: unaPoblacion first.
+	iteracion := 2.
+	unaCantidad timesRepeat: 
+			[self cruzarCromosoma: (unaPoblacion at: iteracion) y: (unaPoblacion at: iteracion + 1).
+			iteracion := iteracion + 2]!
+
+cruzaParUna: unaPoblacion conCantidad: unaCantidad
+	| iteracion |
+	iteracion := 1.
+	unaCantidad timesRepeat: 
+			[self cruzarCromosoma: (unaPoblacion at: iteracion) y: (unaPoblacion at: iteracion + 1).
+			iteracion := iteracion + 2]!
+
+cruzarCromosoma: cromo1 y: cromo2
+	| iteracion temp cromoHijo1 cromoHijo2 genMedioHijo1 genMedioHijo2 |
+	iteracion := 1.
+	cromoHijo1 := Cromosoma new.
+	cromoHijo2 := Cromosoma new.
+	cromoHijo1 genes add: cromo2 genes first.
+	cromoHijo2 genes add: cromo1 genes first.
+	genMedioHijo1 := cromo1 genes second.
+	genMedioHijo2 := cromo2 genes second.
+	3 timesRepeat: 
+			[temp := genMedioHijo1 posicion at: iteracion.
+			genMedioHijo1 posicion at: iteracion put: (genMedioHijo2 posicion at: iteracion).
+			genMedioHijo2 posicion at: iteracion put: temp.
+			iteracion := iteracion + 1].
+	cromoHijo1 genes add: genMedioHijo1.
+	cromoHijo2 genes add: genMedioHijo2.
+	cromoHijo1 genes add: cromo1 genes third.
+	cromoHijo2 genes add: cromo2 genes third.
+	cromo1 genes: cromoHijo1 genes.
+	cromo2 genes: cromoHijo2 genes!
+
+cruzarResTorneo: unaPoblacion
+	| numCruza |
+	numCruza := unaPoblacion size // 2.
+	numCruza \\ 2 = 0
+		ifTrue: [self cruzaParUna: unaPoblacion conCantidad: numCruza // 2]
+		ifFalse: [self cruzaImparUna: unaPoblacion conCantidad: numCruza // 2].
+	^unaPoblacion! !
+!CruzamientoSimple categoriesFor: #cruzaImparUna:conCantidad:!public! !
+!CruzamientoSimple categoriesFor: #cruzaParUna:conCantidad:!public! !
+!CruzamientoSimple categoriesFor: #cruzarCromosoma:y:!public! !
+!CruzamientoSimple categoriesFor: #cruzarResTorneo:!public! !
+
 Torneo guid: (GUID fromString: '{8FD5E23B-9C62-47A3-BEDC-690FD816F7CF}')!
 Torneo comment: ''!
 !Torneo categoriesForClass!MVP-Models! !
@@ -652,16 +731,12 @@ poblacion
 poblacion: anObject
 	poblacion := anObject!
 
-seleccionar
-
-	 poblacion cromosomas sortUsing: (DefaultSortAlgorithm sortBlock: [:a :b |a aptitud >b aptitud ]).
-
-	^poblacion
-
-! !
+seleccion: unaPoblacion
+	unaPoblacion  sortUsing: (DefaultSortAlgorithm sortBlock: [:a :b | a aptitud > b aptitud]).
+	^unaPoblacion! !
 !Torneo categoriesFor: #poblacion!accessing!private! !
 !Torneo categoriesFor: #poblacion:!accessing!private! !
-!Torneo categoriesFor: #seleccionar!public! !
+!Torneo categoriesFor: #seleccion:!public! !
 
 "Binary Globals"!
 
