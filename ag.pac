@@ -139,6 +139,10 @@ buscarGen: unGen
 calcularAptitudDePoblacionInicial
 	poblacionInicial do: [:cromo | cromo aptitud: (self aptitud aptitud: cromo)]!
 
+calcularAptitudDePoblacionMutada
+
+"calcular la aptitud de la funcion cruzada, teniendo en cuenta que hay materia que puede no existir"!
+
 cargarPoblacion
 	| fileIn byteArray |
 	fileIn := FileStream read: 'C:\Users\bruno\Desktop\poblacion'.
@@ -164,7 +168,7 @@ crearGen: unNombre
 cruzamiento
 	seleccion class = Torneo
 		ifTrue: [self halt. poblacionCruzada := cruzamiento cruzarResTorneo: poblacion_seleccionada].
-"calcularAptitud de poblacion cruzada o mutar primero?"!
+!
 
 cruzamiento: anObject
 	cruzamiento := anObject!
@@ -242,6 +246,17 @@ mutacion
 mutacion: anObject
 	mutacion := anObject!
 
+mutacionConProbabilidad: unaProbabilidad
+	| rGenerator |
+	rGenerator := Random new.
+	(rGenerator next * 100) rounded < unaProbabilidad
+		ifTrue: 
+			[self mutacion.
+			self calcularAptitudDePoblacionMutada]
+		ifFalse: 
+			[self poblacionInicial: self poblacionCruzada.
+			self calcularAptitudDePoblacionInicial]!
+
 numNoCero: unNum
 	| random num |
 	num := 0.
@@ -290,6 +305,7 @@ seleccion: anObject
 !Ag categoriesFor: #aptitud:!accessing!public! !
 !Ag categoriesFor: #buscarGen:!public! !
 !Ag categoriesFor: #calcularAptitudDePoblacionInicial!public! !
+!Ag categoriesFor: #calcularAptitudDePoblacionMutada!public! !
 !Ag categoriesFor: #cargarPoblacion!public! !
 !Ag categoriesFor: #convertir_a_decimal:!public! !
 !Ag categoriesFor: #crearGen:!public! !
@@ -305,6 +321,7 @@ seleccion: anObject
 !Ag categoriesFor: #initialize!public! !
 !Ag categoriesFor: #mutacion!accessing!public! !
 !Ag categoriesFor: #mutacion:!accessing!public! !
+!Ag categoriesFor: #mutacionConProbabilidad:!public! !
 !Ag categoriesFor: #numNoCero:!public! !
 !Ag categoriesFor: #poblacion_seleccionada!accessing!public! !
 !Ag categoriesFor: #poblacion_seleccionada:!accessing!public! !
