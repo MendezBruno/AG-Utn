@@ -29,13 +29,20 @@ genes: anObject
 	genes := anObject!
 
 initialize
-	self genes: OrderedCollection new!
+	self genes: OrderedCollection new.
+	self aptitud: 0!
 
 nombre
 	^nombre!
 
 nombre: anObject
-	nombre := anObject! !
+	nombre := anObject!
+
+revisarExitenciaDeMaterias: unAg
+	"si alguno satisface que no existe y entonces asi la desestima"
+
+	(self genes anySatisfy: [:gen | (unAg existeGen: gen) not])
+		ifTrue: [self aptitud: self aptitud - 2000]! !
 !Cromosoma categoriesFor: #aptitud!public! !
 !Cromosoma categoriesFor: #aptitud:!public! !
 !Cromosoma categoriesFor: #dameTusCaracteristicasDesde:a:!public! !
@@ -44,6 +51,7 @@ nombre: anObject
 !Cromosoma categoriesFor: #initialize!public! !
 !Cromosoma categoriesFor: #nombre!accessing!public! !
 !Cromosoma categoriesFor: #nombre:!accessing!public! !
+!Cromosoma categoriesFor: #revisarExitenciaDeMaterias:!public! !
 
 !Cromosoma class methodsFor!
 

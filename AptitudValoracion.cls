@@ -14,7 +14,7 @@ aptitudDe: listaGenes
 	| acum |
 	acum := 0.
 	listaGenes do: [:gen |acum := acum + (self convertir_a_decimal: gen)].
-	^acum * 50!
+	^acum * -50!
 
 convertir_a_decimal: unArray
 	| iteracion acum |

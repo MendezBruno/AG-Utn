@@ -11,6 +11,10 @@ Aptitud comment: 'Calcula la funcion de aptitud de los cromsomas tieendo en cuen
 !Aptitud methodsFor!
 
 aptitud: unCromosoma
+" 1 define la aptitud de final
+  2 define la aptitud de dificultad 
+  3 define la aptitud de el dia de la materia"
+
 	^((self dicDeFunciones at: 1) aptitudDe: (unCromosoma dameTusCaracteristicasDesde: 1 a: 1))
 		+ ((self dicDeFunciones at: 2) aptitudDe: (unCromosoma dameTusCaracteristicasDesde: 2 a: 3))
 			+ ((self dicDeFunciones at: 4) aptitudDe: (unCromosoma dameTusCaracteristicasDesde: 4 a: 6))!

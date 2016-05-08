@@ -277,10 +277,11 @@ ShellCorrerAlgoritmo comment: ''!
 correrAlgoritmo
 	self model generanPoblacionInicial: ctrlNumeroPoblacionInicial value.
 	ctrlNumeroDeCorridas value timesRepeat: 
-			[self halt.
-			self model seleccion.
+			[self model seleccion.
 			self model cruzamiento.
-			self model mutacionConProbabilidad: ctrlProbabilidadMutacion value]!
+			self model mutacionConProbabilidad: ctrlProbabilidadMutacion value.
+			self model poblacionInicial: self model poblacionCruzada.
+			self model calcularAptitudDeNuevaPoblacionInicial]!
 
 createComponents
 	super createComponents.

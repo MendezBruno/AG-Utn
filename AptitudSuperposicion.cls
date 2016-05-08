@@ -11,6 +11,7 @@ AptitudSuperposicion comment: ''!
 !AptitudSuperposicion methodsFor!
 
 aptitudDe: listaGenes
+"recibe los genes correspondientes a los dias de la semana"
 	^(self genesIguales: listaGenes) * -125!
 
 convertir_a_decimal: unArray
@@ -23,12 +24,13 @@ convertir_a_decimal: unArray
 			iteracion := iteracion + 1].
 	^acum!
 
-genesIguales:listaGenes
-|listaNumeros |
-listaNumeros:= OrderedCollection new.
-listaGenes do:[:gen| listaNumeros add: ( self convertir_a_decimal:gen)].
-^(listaNumeros size)- (listaNumeros asSet size)
-! !
+genesIguales: listaGenes
+	"los genes corresponden a los ultimas tres posiciones de cada materia"
+
+	| listaNumeros |
+	listaNumeros := OrderedCollection new.
+	listaGenes do: [:gen | listaNumeros add: (self convertir_a_decimal: gen)].
+	^listaNumeros size - listaNumeros asSet size! !
 !AptitudSuperposicion categoriesFor: #aptitudDe:!public! !
 !AptitudSuperposicion categoriesFor: #convertir_a_decimal:!public! !
 !AptitudSuperposicion categoriesFor: #genesIguales:!public! !

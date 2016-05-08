@@ -23,12 +23,15 @@ aptitud: anObject
 buscarGen: unGen
 ^poblacionMundial detect: [:each | (self convertir_a_decimal: each posicion) =  (self convertir_a_decimal: unGen posicion) ]!
 
+calcularAptitudDeNuevaPoblacionInicial
+	"calcular la aptitud de la funcion cruzada, teniendo en cuenta que hay materia que puede no existir"
+
+	self revisarGenesDePoblacionInicial.
+	poblacionInicial do: [:cromo | cromo revisarExitenciaDeMaterias: self].
+	self calcularAptitudDePoblacionInicial!
+
 calcularAptitudDePoblacionInicial
-	poblacionInicial do: [:cromo | cromo aptitud: (self aptitud aptitud: cromo)]!
-
-calcularAptitudDePoblacionMutada
-
-"calcular la aptitud de la funcion cruzada, teniendo en cuenta que hay materia que puede no existir"!
+	poblacionInicial do: [:cromo | cromo aptitud: cromo aptitud + (self aptitud aptitud: cromo)]!
 
 cargarPoblacion
 	| fileIn byteArray |
@@ -54,7 +57,7 @@ crearGen: unNombre
 
 cruzamiento
 	seleccion class = Torneo
-		ifTrue: [self halt. poblacionCruzada := cruzamiento cruzarResTorneo: poblacion_seleccionada].
+		ifTrue: [ poblacionCruzada := cruzamiento cruzarResTorneo: poblacion_seleccionada].
 !
 
 cruzamiento: anObject
@@ -82,7 +85,7 @@ dameUnGenNoRepetido: unCromosoma
 	^poblacionMundial at: num!
 
 existeGen: unGen
-^poblacionMundial anySatisfy: [:each |self halt. (self convertir_a_decimal: each posicion) =  (self convertir_a_decimal: unGen posicion) ]!
+^poblacionMundial anySatisfy: [:each | (self convertir_a_decimal: each posicion) =  (self convertir_a_decimal: unGen posicion) ]!
 
 generanPoblacionInicial
 	self poblacionRestante addAll: poblacionMundial.
@@ -136,13 +139,7 @@ mutacion: anObject
 mutacionConProbabilidad: unaProbabilidad
 	| rGenerator |
 	rGenerator := Random new.
-	(rGenerator next * 100) rounded < unaProbabilidad
-		ifTrue: 
-			[self mutacion.
-			self calcularAptitudDePoblacionMutada]
-		ifFalse: 
-			[self poblacionInicial: self poblacionCruzada.
-			self calcularAptitudDePoblacionInicial]!
+	(rGenerator next * 100) rounded < unaProbabilidad ifTrue: [self mutacion]!
 
 numNoCero: unNum
 	| random num |
@@ -182,6 +179,22 @@ poblacionRestante
 poblacionRestante: anObject
 	poblacionRestante := anObject!
 
+revisarGenesDePoblacionInicial
+	"revisa que los datos de los genes sean correctos producto de la mutacion y o cruzamiento "
+
+	| cromoAuxiliar nuevaPoblacion |
+	nuevaPoblacion := OrderedCollection new.
+	poblacionInicial do: 
+			[:cromosoma |
+			cromoAuxiliar := Cromosoma new.
+			cromosoma genes do: 
+					[:gen |
+					(self existeGen: gen)
+						ifTrue: [cromoAuxiliar genes add: (self buscarGen: gen)]
+						ifFalse: [cromoAuxiliar genes add: gen]].
+			nuevaPoblacion add: cromoAuxiliar].
+	self poblacionInicial: nuevaPoblacion!
+
 seleccion
 	self poblacion_seleccionada: (seleccion seleccion: poblacionInicial)!
 
@@ -191,8 +204,8 @@ seleccion: anObject
 !Ag categoriesFor: #aptitud!accessing!public! !
 !Ag categoriesFor: #aptitud:!accessing!public! !
 !Ag categoriesFor: #buscarGen:!public! !
+!Ag categoriesFor: #calcularAptitudDeNuevaPoblacionInicial!public! !
 !Ag categoriesFor: #calcularAptitudDePoblacionInicial!public! !
-!Ag categoriesFor: #calcularAptitudDePoblacionMutada!public! !
 !Ag categoriesFor: #cargarPoblacion!public! !
 !Ag categoriesFor: #convertir_a_decimal:!public! !
 !Ag categoriesFor: #crearGen:!public! !
@@ -220,6 +233,7 @@ seleccion: anObject
 !Ag categoriesFor: #poblacionMundial:!accessing!private! !
 !Ag categoriesFor: #poblacionRestante!accessing!public! !
 !Ag categoriesFor: #poblacionRestante:!accessing!public! !
+!Ag categoriesFor: #revisarGenesDePoblacionInicial!public! !
 !Ag categoriesFor: #seleccion!accessing!public! !
 !Ag categoriesFor: #seleccion:!accessing!public! !
 
