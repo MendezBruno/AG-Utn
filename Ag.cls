@@ -137,9 +137,14 @@ mutacion: anObject
 	mutacion := anObject!
 
 mutacionConProbabilidad: unaProbabilidad
+	"si cae dentro de la posibilidad muta, 
+retorna el true o false para el reporte
+"
+
 	| rGenerator |
 	rGenerator := Random new.
-	(rGenerator next * 100) rounded < unaProbabilidad ifTrue: [self mutacion]!
+	(rGenerator next * 100) rounded < unaProbabilidad ifTrue: [self mutacion].
+	^(rGenerator next * 100) rounded < unaProbabilidad!
 
 numNoCero: unNum
 	| random num |

@@ -27,7 +27,6 @@ package setPrerequisites: (IdentitySet new
 	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Presenters\List\Dolphin List Presenter';
 	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Base\Dolphin MVP Base';
 	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Presenters\Number\Dolphin Number Presenter';
-	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Views\Styled Views\Dolphin Styled Views';
 	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Presenters\Text\Dolphin Text Presenter';
 	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Type Converters\Dolphin Type Converters';
 	add: '..\..\Users\bruno\Documents\Dolphin Smalltalk 7\Core\Object Arts\Dolphin\MVP\Models\Value\Dolphin Value Models';
@@ -274,14 +273,40 @@ ShellCorrerAlgoritmo comment: ''!
 !ShellCorrerAlgoritmo categoriesForClass!MVP-Presenters! !
 !ShellCorrerAlgoritmo methodsFor!
 
+avisarEtapa: unaEtapa
+	| esp enter t |
+	enter := '
+'.
+	esp := '******************************************************************'.
+	t := ctrlConteinerResultado.
+	t value: t value , enter , esp , enter , unaEtapa , enter , esp , enter!
+
+avisarMejorIndividuo
+	| mejorIndividuo |
+	mejorIndividuo := OrderedCollection new.
+	mejorIndividuo add: self model poblacionInicial first.
+	self reportarPoblacion: mejorIndividuo!
+
 correrAlgoritmo
+	| i |
+	i := 1.
+	self reporteInicial.
 	self model generanPoblacionInicial: ctrlNumeroPoblacionInicial value.
 	ctrlNumeroDeCorridas value timesRepeat: 
-			[self model seleccion.
+			[self avisarEtapa: 'COMIENZO ITERACION N: ' , i displayString , '...'.
+			self reportarPoblacion: self model poblacionInicial.
+			self avisarEtapa: 'ETAPA SELECCION'.
+			self model seleccion.
+			self reportarSeleccion: self model poblacionInicial.
+			self avisarEtapa: 'ETAPA CRUZAMIENTO'.
 			self model cruzamiento.
-			self model mutacionConProbabilidad: ctrlProbabilidadMutacion value.
+			self avisarEtapa: 'ETAPA MUTACION'.
+			self reporteMutacion: (self model mutacionConProbabilidad: ctrlProbabilidadMutacion value).
 			self model poblacionInicial: self model poblacionCruzada.
-			self model calcularAptitudDeNuevaPoblacionInicial]!
+			self model calcularAptitudDeNuevaPoblacionInicial.
+			self avisarEtapa: 'RESULTADO DE LA VUELTA'.
+			self avisarMejorIndividuo.
+			i := i + 1]!
 
 createComponents
 	super createComponents.
@@ -312,7 +337,73 @@ ctrlProbabilidadMutacion
 	^ctrlProbabilidadMutacion!
 
 ctrlProbabilidadMutacion: anObject
-	ctrlProbabilidadMutacion := anObject! !
+	ctrlProbabilidadMutacion := anObject!
+
+reportarPoblacion: unaPoblacion
+	| enter t i |
+	enter := '
+'.
+	i := 1.
+	t := ctrlConteinerResultado.
+	unaPoblacion do: 
+			[:cromo |
+			t
+				value: t value , enter , 'individuo numero: ' , i displayString , enter , ' materias: '
+						, cromo genes first nombre , enter
+						, 'Final: ' , cromo genes first final
+						, enter , 'Dificultad: '
+						, cromo genes first dificultad , enter
+						, 'Dia: ' , cromo genes first dia
+						, enter , cromo genes second nombre
+						, enter , 'Final: '
+						, cromo genes second final , enter
+						, 'Dificultad: ' , cromo genes second dificultad
+						, enter , 'Dia: '
+						, cromo genes second dia , enter
+						, cromo genes third nombre , enter
+						, 'Final: ' , cromo genes third final
+						, enter , 'Dificultad: '
+						, cromo genes third dificultad , enter
+						, 'Dia: ' , cromo genes third dia
+						, enter , enter
+						, ' aptitud: ' , cromo aptitud displayString
+						, enter.
+			i := i + 1]!
+
+reportarSeleccion: unaPoblacion
+	| mide poblaPublicar i |
+	i := 1.
+	poblaPublicar := OrderedCollection new.
+	mide := unaPoblacion size // 2.
+	mide timesRepeat: 
+			[poblaPublicar add: (unaPoblacion at: i).
+			i := i + 1].
+	self reportarPoblacion: poblaPublicar!
+
+reporteInicial
+	ctrlConteinerResultado value: 'Corriendo algoritmo.
+'.
+	ctrlConteinerResultado
+		value: ctrlConteinerResultado value , 'Numero de Corridas: '
+				, ctrlNumeroDeCorridas value displayString , '
+'.
+	ctrlConteinerResultado
+		value: ctrlConteinerResultado value , 'Numero de Poblacion Inicial: '
+				, ctrlNumeroPoblacionInicial value displayString , '
+'.
+	ctrlConteinerResultado
+		value: ctrlConteinerResultado value , 'Probabilidad de mutacion: '
+				, ctrlProbabilidadMutacion value displayString , '%
+'!
+
+reporteMutacion: aBoolean
+	aBoolean
+		ifTrue: [ctrlConteinerResultado value: ctrlConteinerResultado value , 'Se Muto.
+']
+		ifFalse: [ctrlConteinerResultado value: ctrlConteinerResultado value , 'No se Muto.
+']! !
+!ShellCorrerAlgoritmo categoriesFor: #avisarEtapa:!public! !
+!ShellCorrerAlgoritmo categoriesFor: #avisarMejorIndividuo!public! !
 !ShellCorrerAlgoritmo categoriesFor: #correrAlgoritmo!public! !
 !ShellCorrerAlgoritmo categoriesFor: #createComponents!public! !
 !ShellCorrerAlgoritmo categoriesFor: #ctrlConteinerResultado!accessing!public! !
@@ -323,6 +414,10 @@ ctrlProbabilidadMutacion: anObject
 !ShellCorrerAlgoritmo categoriesFor: #ctrlNumeroPoblacionInicial:!accessing!public! !
 !ShellCorrerAlgoritmo categoriesFor: #ctrlProbabilidadMutacion!accessing!public! !
 !ShellCorrerAlgoritmo categoriesFor: #ctrlProbabilidadMutacion:!accessing!public! !
+!ShellCorrerAlgoritmo categoriesFor: #reportarPoblacion:!public! !
+!ShellCorrerAlgoritmo categoriesFor: #reportarSeleccion:!public! !
+!ShellCorrerAlgoritmo categoriesFor: #reporteInicial!public! !
+!ShellCorrerAlgoritmo categoriesFor: #reporteMutacion:!public! !
 
 !ShellCorrerAlgoritmo class methodsFor!
 
@@ -334,7 +429,7 @@ resource_Default_view
 	ViewComposer openOn: (ResourceIdentifier class: self selector: #resource_Default_view)
 	"
 
-	^#(#'!!STL' 3 788558 10 ##(Smalltalk.STBViewProxy) 8 ##(Smalltalk.ShellView) 98 27 0 0 98 2 27131905 131073 416 0 524550 ##(Smalltalk.ColorRef) 8 4278190080 0 551 0 0 0 416 1180166 ##(Smalltalk.ProportionalLayout) 234 240 98 0 32 234 256 98 2 410 8 ##(Smalltalk.StyledContainer) 98 22 0 416 98 2 8 1174405120 131073 624 0 0 0 7 0 0 0 624 0 234 256 576 0 202 208 98 4 8 #top 8 #bottom 8 #left 8 #right 590598 ##(Smalltalk.StyledPen) 786694 ##(Smalltalk.IndexedColor) 33554433 5 98 1 3 1246214 ##(Smalltalk.StyledGradientBrush) 721158 ##(Smalltalk.SystemColor) 31 0 328198 ##(Smalltalk.Point) 327734 ##(Smalltalk.Float) 8 0 0 0 0 0 0 224 63 1 962 994 8 0 0 0 0 0 0 224 63 3 98 4 41 41 41 41 16 0 1 983302 ##(Smalltalk.MessageSequence) 202 208 98 1 721670 ##(Smalltalk.MessageSend) 8 #createAt:extent: 98 2 962 1 1 962 533 739 624 983302 ##(Smalltalk.WINDOWPLACEMENT) 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 10 1 0 0 113 1 0 0] 98 0 962 193 193 0 27 8 'conteinerResultado' 0 0 0 0 0 1 0 0 0 0 1 0 0 1074 202 208 98 3 1138 1168 98 2 962 2731 21 962 1081 801 416 1138 8 #text: 98 1 8 'Correr el Algoritmo - Algoritmo Genético' 416 1138 8 #updateMenuBar 576 416 1234 8 #[44 0 0 0 0 0 0 0 0 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 85 5 0 0 10 0 0 0 113 7 0 0 154 1 0 0] 98 2 624 410 8 ##(Smalltalk.ContainerView) 98 15 0 416 98 2 8 1140850688 131073 1584 0 0 0 7 0 0 0 1584 530 234 240 98 4 410 1600 98 15 0 1584 98 2 8 1140850688 131073 1712 0 0 0 7 0 0 0 1712 530 234 240 576 32 234 256 576 0 1074 202 208 98 1 1138 1168 98 2 962 1 553 962 533 187 1712 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 20 1 0 0 10 1 0 0 113 1 0 0] 98 1 410 8 ##(Smalltalk.PushButton) 98 20 0 1712 98 2 8 1140924416 1 1984 0 0 0 7 0 0 0 1984 0 8 4294902864 1180998 4 ##(Smalltalk.CommandDescription) 8 #correrAlgoritmo 8 'Correr' 1 1 0 0 32 0 0 0 1074 202 208 98 3 1138 1168 98 2 962 1 1 962 533 187 1984 1138 8 #isEnabled: 98 1 32 1984 1138 1456 98 1 8 'Correr' 1984 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 10 1 0 0 93 0 0 0] 98 0 1296 0 29 1296 0 27 524806 ##(Smalltalk.Fraction) 369 371 410 1600 98 15 0 1584 98 2 8 1140850688 131073 2432 0 0 0 7 0 0 0 2432 0 234 256 98 2 410 8 ##(Smalltalk.TextEdit) 98 16 0 2432 98 2 8 1140916224 1025 2528 0 482 8 4278190080 0 7 0 0 0 2528 0 8 4294902856 787206 ##(Smalltalk.NumberToText) 0 8 '' 0 1 1074 202 208 98 3 1138 1168 98 2 962 411 11 962 51 41 2528 1138 8 #selectionRange: 98 1 525062 ##(Smalltalk.Interval) 3 1 3 2528 1138 8 #isTextModified: 98 1 32 2528 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 205 0 0 0 5 0 0 0 230 0 0 0 25 0 0 0] 98 0 1296 0 27 8 'boxProbabilidadDeMutacion' 0 1074 202 208 98 1 1138 1168 98 2 962 1 185 962 533 185 2432 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 92 0 0 0 10 1 0 0 184 0 0 0] 98 3 410 8 ##(Smalltalk.StaticText) 98 16 0 2432 98 2 8 1140850944 65 3168 0 0 0 7 0 0 0 3168 0 8 4294902852 852486 ##(Smalltalk.NullConverter) 0 0 0 1074 202 208 98 2 1138 1168 98 2 962 11 3 962 311 41 3168 1138 1456 98 1 8 'Probabilidad De Mutación' 3168 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 5 0 0 0 1 0 0 0 160 0 0 0 21 0 0 0] 98 0 1296 0 27 2528 410 3184 98 16 0 2432 98 2 8 1140850944 65 3504 0 0 0 7 0 0 0 3504 0 8 4294902852 3266 0 0 0 1074 202 208 98 2 1138 1168 98 2 962 471 11 962 31 31 3504 1138 1456 98 1 8 '%' 3504 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 235 0 0 0 5 0 0 0 250 0 0 0 20 0 0 0] 98 0 1296 0 27 1296 0 27 2402 373 371 16 234 256 576 0 1074 202 208 98 1 1138 1168 98 2 962 533 1 962 533 739 1584 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 10 1 0 0 0 0 0 0 20 2 0 0 113 1 0 0] 98 4 410 1600 98 15 0 1584 98 2 8 1140850688 131073 4000 0 0 0 7 0 0 0 4000 0 234 256 98 4 410 2544 98 16 0 4000 98 2 8 1140916224 1025 4096 0 482 8 4278190080 0 7 0 0 0 4096 0 8 4294902856 2658 0 8 '' 0 1 1074 202 208 98 3 1138 1168 98 2 962 411 51 962 71 41 4096 1138 2832 98 1 2866 3 1 3 4096 1138 2912 98 1 32 4096 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 205 0 0 0 25 0 0 0 240 0 0 0 45 0 0 0] 98 0 1296 0 27 8 'boxNumCorridas' 410 2544 98 16 0 4000 98 2 8 1140916224 1025 4496 0 482 4176 0 7 0 0 0 4496 0 8 4294902856 2658 0 8 '' 0 1 1074 202 208 98 3 1138 1168 98 2 962 411 111 962 71 41 4496 1138 2832 98 1 2866 3 1 3 4496 1138 2912 98 1 32 4496 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 205 0 0 0 55 0 0 0 240 0 0 0 75 0 0 0] 98 0 1296 0 27 8 'boxCantidadDePoblacionInicial' 0 1074 202 208 98 1 1138 1168 98 2 962 1 1 962 533 185 4000 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 10 1 0 0 92 0 0 0] 98 4 410 3184 98 16 0 4000 98 2 8 1140850944 65 5040 0 0 0 7 0 0 0 5040 0 8 4294902852 3266 0 0 0 1074 202 208 98 2 1138 1168 98 2 962 11 51 962 241 39 5040 1138 1456 98 1 8 'Número de Corridas' 5040 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 5 0 0 0 25 0 0 0 125 0 0 0 44 0 0 0] 98 0 1296 0 27 4096 410 3184 98 16 0 4000 98 2 8 1140850944 65 5344 0 0 0 7 0 0 0 5344 0 8 4294902852 3266 0 0 0 1074 202 208 98 2 1138 1168 98 2 962 11 111 962 351 41 5344 1138 1456 98 1 8 'Cantidad de Poblacion Inicial' 5344 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 5 0 0 0 55 0 0 0 180 0 0 0 75 0 0 0] 98 0 1296 0 27 4496 1296 0 27 2432 410 1600 98 15 0 1584 98 2 8 1140850688 131073 5648 0 0 0 7 0 0 0 5648 0 234 256 576 0 1074 202 208 98 1 1138 1168 98 2 962 1 369 962 533 185 5648 1234 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 184 0 0 0 10 1 0 0 20 1 0 0] 98 0 1296 0 27 1712 1296 0 27 1296 0 27 )! !
+	^#(#'!!STL' 3 788558 10 ##(Smalltalk.STBViewProxy) 8 ##(Smalltalk.ShellView) 98 27 0 0 98 2 26607617 131073 416 0 524550 ##(Smalltalk.ColorRef) 8 4278190080 0 39 0 0 0 416 1180166 ##(Smalltalk.ProportionalLayout) 234 240 98 0 32 234 256 98 2 410 8 ##(Smalltalk.MultilineTextEdit) 98 16 0 416 98 2 8 1143017796 1025 624 0 482 8 4278190080 0 7 0 263174 ##(Smalltalk.Font) 0 16 459014 ##(Smalltalk.LOGFONT) 8 #[240 255 255 255 0 0 0 0 0 0 0 0 0 0 0 0 188 2 0 0 0 0 0 0 1 2 1 34 83 121 115 116 101 109 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] 328198 ##(Smalltalk.Point) 193 193 0 624 0 8 4294903027 852486 ##(Smalltalk.NullConverter) 0 0 9 983302 ##(Smalltalk.MessageSequence) 202 208 98 3 721670 ##(Smalltalk.MessageSend) 8 #createAt:extent: 98 2 818 1 1 818 505 743 624 962 8 #selectionRange: 98 1 525062 ##(Smalltalk.Interval) 3 1 3 624 962 8 #isTextModified: 98 1 32 624 983302 ##(Smalltalk.WINDOWPLACEMENT) 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 252 0 0 0 115 1 0 0] 98 0 818 193 193 0 27 8 'conteinerResultado' 0 0 0 0 0 1 0 0 0 0 1 0 0 898 202 208 98 3 962 992 98 2 818 2731 21 818 1021 801 416 962 8 #text: 98 1 8 'Correr el Algoritmo - Algoritmo Genético' 416 962 8 #updateMenuBar 576 416 1186 8 #[44 0 0 0 0 0 0 0 0 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 85 5 0 0 10 0 0 0 83 7 0 0 154 1 0 0] 98 2 624 410 8 ##(Smalltalk.ContainerView) 98 15 0 416 98 2 8 1140850688 131073 1536 0 0 0 7 0 0 0 1536 530 234 240 98 4 410 1552 98 15 0 1536 98 2 8 1140850688 131073 1664 0 0 0 7 0 0 0 1664 0 234 256 98 2 410 8 ##(Smalltalk.TextEdit) 98 16 0 1664 98 2 8 1140924416 1025 1760 0 482 8 4278190080 0 7 0 0 0 1760 0 8 4294903027 787206 ##(Smalltalk.NumberToText) 0 8 '' 0 1 898 202 208 98 3 962 992 98 2 818 411 11 818 51 41 1760 962 1072 98 1 1106 3 1 3 1760 962 1152 98 1 32 1760 1186 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 205 0 0 0 5 0 0 0 230 0 0 0 25 0 0 0] 98 0 1248 0 27 8 'boxProbabilidadDeMutacion' 0 898 202 208 98 1 962 992 98 2 818 1 185 818 505 187 1664 1186 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 92 0 0 0 252 0 0 0 185 0 0 0] 98 3 410 8 ##(Smalltalk.StaticText) 98 16 0 1664 98 2 8 1140850944 65 2352 0 0 0 7 0 0 0 2352 0 8 4294903025 866 0 0 0 898 202 208 98 2 962 992 98 2 818 11 3 818 311 41 2352 962 1408 98 1 8 'Probabilidad De Mutación' 2352 1186 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 5 0 0 0 1 0 0 0 160 0 0 0 21 0 0 0] 98 0 1248 0 27 1760 410 2368 98 16 0 1664 98 2 8 1140850944 65 2672 0 0 0 7 0 0 0 2672 0 8 4294903025 866 0 0 0 898 202 208 98 2 962 992 98 2 818 471 11 818 31 31 2672 962 1408 98 1 8 '%' 2672 1186 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 235 0 0 0 5 0 0 0 250 0 0 0 20 0 0 0] 98 0 1248 0 27 1248 0 27 524806 ##(Smalltalk.Fraction) 373 371 410 1552 98 15 0 1536 98 2 8 1140850688 131073 3008 0 0 0 7 0 0 0 3008 530 234 240 576 32 234 256 576 0 898 202 208 98 1 962 992 98 2 818 1 555 818 505 189 3008 1186 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 21 1 0 0 252 0 0 0 115 1 0 0] 98 1 410 8 ##(Smalltalk.PushButton) 98 20 0 3008 98 2 8 1140924416 1 3280 0 0 0 7 0 0 0 3280 0 8 4294903029 1180998 4 ##(Smalltalk.CommandDescription) 8 #correrAlgoritmo 8 'Correr' 1 1 0 0 32 0 0 0 898 202 208 98 3 962 992 98 2 818 1 1 818 505 189 3280 962 8 #isEnabled: 98 1 32 3280 962 1408 98 1 8 'Correr' 3280 1186 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 252 0 0 0 94 0 0 0] 98 0 1248 0 29 1248 0 27 2978 369 371 16 234 256 576 0 898 202 208 98 1 962 992 98 2 818 505 1 818 505 743 1536 1186 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 252 0 0 0 0 0 0 0 248 1 0 0 115 1 0 0] 98 4 410 1552 98 15 0 1536 98 2 8 1140850688 131073 3888 0 0 0 7 0 0 0 3888 0 234 256 98 4 410 1776 98 16 0 3888 98 2 8 1140924416 1025 3984 0 482 8 4278190080 0 7 0 0 0 3984 0 8 4294903027 1890 0 8 '' 0 1 898 202 208 98 3 962 992 98 2 818 411 111 818 71 41 3984 962 1072 98 1 1106 3 1 3 3984 962 1152 98 1 32 3984 1186 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 205 0 0 0 55 0 0 0 240 0 0 0 75 0 0 0] 98 0 1248 0 27 8 'boxCantidadDePoblacionInicial' 410 1776 98 16 0 3888 98 2 8 1140924416 1025 4384 0 482 4064 0 7 0 0 0 4384 0 8 4294903027 1890 0 8 '' 0 1 898 202 208 98 3 962 992 98 2 818 411 51 818 71 41 4384 962 1072 98 1 1106 3 1 3 4384 962 1152 98 1 32 4384 1186 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 205 0 0 0 25 0 0 0 240 0 0 0 45 0 0 0] 98 0 1248 0 27 8 'boxNumCorridas' 0 898 202 208 98 1 962 992 98 2 818 1 1 818 505 185 3888 1186 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 0 0 0 0 252 0 0 0 92 0 0 0] 98 4 410 2368 98 16 0 3888 98 2 8 1140850944 65 4928 0 0 0 7 0 0 0 4928 0 8 4294903025 866 0 0 0 898 202 208 98 2 962 992 98 2 818 11 51 818 241 39 4928 962 1408 98 1 8 'Número de Corridas' 4928 1186 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 5 0 0 0 25 0 0 0 125 0 0 0 44 0 0 0] 98 0 1248 0 27 4384 410 2368 98 16 0 3888 98 2 8 1140850944 65 5232 0 0 0 7 0 0 0 5232 0 8 4294903025 866 0 0 0 898 202 208 98 2 962 992 98 2 818 11 111 818 351 41 5232 962 1408 98 1 8 'Cantidad de Poblacion Inicial' 5232 1186 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 5 0 0 0 55 0 0 0 180 0 0 0 75 0 0 0] 98 0 1248 0 27 3984 1248 0 27 1664 410 1552 98 15 0 1536 98 2 8 1140850688 131073 5536 0 0 0 7 0 0 0 5536 0 234 256 576 0 898 202 208 98 1 962 992 98 2 818 1 371 818 505 185 5536 1186 8 #[44 0 0 0 0 0 0 0 1 0 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 0 0 0 0 185 0 0 0 252 0 0 0 21 1 0 0] 98 0 1248 0 27 3008 1248 0 27 1248 0 27 )! !
 !ShellCorrerAlgoritmo class categoriesFor: #resource_Default_view!public!resources-views! !
 
 ShellPoblacionActualPresenter guid: (GUID fromString: '{F5AC67BD-7BDE-4475-82F8-E5031EC3631A}')!
