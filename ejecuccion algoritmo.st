@@ -1,7 +1,3 @@
-ag:= Ag new.
-ShellAgPresenter showOn: ag.
+ShellAgPresenter showOn:Ag new
 
 
-ag guardarPoblacion.
-ag cargarPoblacion.
-ag generanPoblacionInicial.

@@ -148,7 +148,7 @@ calcularAptitudDePoblacionInicial
 
 cargarPoblacion
 	| fileIn byteArray |
-	fileIn := FileStream read: 'C:\Users\bruno\Desktop\poblacion'.
+	fileIn := FileStream read: RelativeFileLocator new basePath , 'poblacion'.
 	byteArray := fileIn collection asByteArray.
 	poblacionMundial := ODBDeserializer deserializeFromBytes: byteArray!
 
@@ -180,7 +180,7 @@ dameUnCromosoma
 	| cromosoma gen |
 	cromosoma := Cromosoma new.
 	3 timesRepeat: 
-			[gen := self dameUnGen.
+			[gen := self dameUnGenNoRepetido: cromosoma.
 			cromosoma genes add: gen.
 			poblacionRestante remove: gen].
 	^cromosoma!
@@ -191,7 +191,7 @@ dameUnGen
 	^poblacionRestante at: num!
 
 dameUnGenNoRepetido: unCromosoma
-	| random num |
+	| num |
 	num := self numNoCero: poblacionMundial size.
 	[unCromosoma genes includes: (poblacionMundial at: num)]
 		whileTrue: [num := self numNoCero: poblacionMundial size].
